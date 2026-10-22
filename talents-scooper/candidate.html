@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Candidate Nest · Talents Scooper</title>
+  <link rel="icon" href="../shared/img/neuleap-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../shared/css/tokens.css">
+  <link rel="stylesheet" href="../shared/css/base.css">
+  <link rel="stylesheet" href="../shared/css/components.css">
+  <link rel="stylesheet" href="../shared/css/layout.css">
+  <link rel="stylesheet" href="app.css">
+  <script src="../shared/js/ui.js"></script>
+  <script defer src="../shared/vendor/lucide/lucide.min.js"></script>
+  <script defer src="data.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="app" data-nav="candidates" data-title="Candidate Nest">
+    <aside class="sidebar" data-sidebar></aside>
+    <div class="main">
+      <header class="topbar ts-topbar" data-topbar></header>
+      <main class="content">
+        <a class="btn btn--ghost" href="index.html" style="margin:-8px 0 16px -16px"><i data-lucide="arrow-left"></i>Back</a>
+        <div class="col gap-24">
+          <section class="card gap-24">
+            <div class="profile-head">
+              <span class="avatar avatar--64" id="c-avatar">NL</span>
+              <div class="col gap-8 grow">
+                <div class="row wrap gap-12"><h2 class="t-page-title" data-c-name>Name LastName</h2><span class="chip">ID <span id="c-id">C1034</span></span><span class="chip chip--info" id="c-role">Gen AI</span><span class="chip chip--success">Round 2</span></div>
+                <div class="profile-meta">
+                  <span><i data-lucide="mail"></i><span id="c-email"></span></span>
+                  <span><i data-lucide="phone"></i><span id="c-phone"></span></span>
+                  <span><i data-lucide="map-pin"></i><span id="c-location"></span></span>
+                </div>
+              </div>
+              <div class="row wrap gap-12">
+                <button class="btn btn--ghost" data-open="note-modal"><i data-lucide="sticky-note"></i>Add note</button>
+                <button class="btn btn--outline" data-open="audit-modal"><i data-lucide="scroll-text"></i>Actions Audit Log</button>
+                <button class="btn btn--secondary" id="view-resume"><i data-lucide="file-text"></i>View Resume</button>
+              </div>
+            </div>
+          </section>
+
+          <details class="card collapsible" open>
+            <summary><span class="t-title grow">One Line Summary</span><i data-lucide="chevron-down"></i></summary>
+            <p class="t-body-lg" id="c-summary" style="margin-top:8px"></p>
+          </details>
+
+          <div class="grid grid-2" style="align-items:start">
+            <section class="card gap-16">
+              <div class="card__header"><h3 class="card__title grow">Analysis Report</h3><span class="chip chip--success chip--lg">Overall <span id="c-score"></span></span></div>
+              <div class="analysis" id="c-analysis"></div>
+            </section>
+            <div class="col gap-24">
+              <section class="card gap-16">
+                <h3 class="card__title">Certifications</h3>
+                <div class="row wrap" id="c-certs"></div>
+              </section>
+              <section class="card gap-16">
+                <h3 class="card__title">Education</h3>
+                <div class="col gap-4"><span class="t-overline">College</span><span class="t-body-lg text-strong" id="c-college"></span></div>
+                <div class="kv">
+                  <div><div class="t-overline">Highest degree</div><div class="t-subhead" id="c-degree"></div></div>
+                  <div><div class="t-overline">CGPA</div><div class="t-subhead" id="c-cgpa"></div></div>
+                  <div><div class="t-overline">Passout</div><div class="t-subhead" id="c-passout"></div></div>
+                </div>
+              </section>
+              <section class="card gap-16">
+                <h3 class="card__title">Round history</h3>
+                <ol class="timeline" id="c-rounds"></ol>
+              </section>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <div class="modal" id="note-modal" role="dialog" aria-labelledby="note-title" aria-hidden="true">
+    <div class="modal__header"><div class="grow"><h2 class="t-title" id="note-title">Add note</h2><p class="t-body text-muted">Notes are visible to everyone on the hiring team.</p></div><button class="icon-btn icon-btn--round" data-close aria-label="Close"><i data-lucide="x"></i></button></div>
+    <form class="col gap-16" id="note-form">
+      <div class="field"><label class="field__label" for="note-text">Note</label><textarea class="input" id="note-text" placeholder="e.g. Strong on RAG, follow up on system design in Round 2" required></textarea></div>
+      <div class="row gap-12" style="justify-content:flex-end"><button type="button" class="btn btn--secondary" data-close>Cancel</button><button class="btn btn--primary" type="submit">Save note</button></div>
+    </form>
+  </div>
+  <div class="modal" id="audit-modal" role="dialog" aria-labelledby="audit-title" aria-hidden="true">
+    <div class="modal__header"><div class="grow"><h2 class="t-title" id="audit-title">Actions Audit Log</h2><p class="t-body text-muted" data-c-name></p></div><button class="icon-btn icon-btn--round" data-close aria-label="Close"><i data-lucide="x"></i></button></div>
+    <div class="modal__body"><ol class="timeline" id="audit-list"></ol></div>
+  </div>
+</body>
+</html>

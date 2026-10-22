@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test introduction · Neuleap Aptitude Test</title>
+  <link rel="icon" href="../shared/img/neuleap-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../shared/css/tokens.css">
+  <link rel="stylesheet" href="../shared/css/base.css">
+  <link rel="stylesheet" href="../shared/css/components.css">
+  <link rel="stylesheet" href="app.css">
+  <script src="../shared/js/ui.js"></script>
+  <script defer src="../shared/vendor/lucide/lucide.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="intro">
+  <div class="ta">
+    <header class="ta-header">
+      <a class="logo" href="index.html"><img src="../shared/img/neuleap-mark.svg" alt=""><span class="logo__word">Neuleap</span></a>
+      <span class="spacer"></span>
+      <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"></button>
+    </header>
+    <div class="glow" style="width:720px;height:600px;right:20%;top:-240px"></div>
+    <main class="ta-main" style="justify-content:flex-start">
+      <section class="intro">
+        <span class="pill"><i data-lucide="shield"></i>Aptitude Assessment · Round 1</span>
+        <div class="col">
+          <h1 class="t-page-title" style="font-size:28px;line-height:36px">Before you begin</h1>
+          <p class="t-body-lg text-muted">Welcome, <span data-first-name>Aarav</span>. Read the instructions carefully — the timer starts the moment you click Begin test.</p>
+        </div>
+
+        <div class="intro-stats">
+          <div class="card intro-stat"><span class="icon-tile"><i data-lucide="clock"></i></span><div><div class="t-subhead">45 minutes</div><div class="t-body text-muted">Total duration</div></div></div>
+          <div class="card intro-stat"><span class="icon-tile icon-tile--purple"><i data-lucide="list-checks"></i></span><div><div class="t-subhead">30 questions</div><div class="t-body text-muted">10 in each section</div></div></div>
+          <div class="card intro-stat"><span class="icon-tile icon-tile--warning"><i data-lucide="layers"></i></span><div><div class="t-subhead">3 sections</div><div class="t-body text-muted">Unlock one at a time</div></div></div>
+          <div class="card intro-stat"><span class="icon-tile icon-tile--success"><i data-lucide="plus-circle"></i></span><div><div class="t-subhead">+1 per correct</div><div class="t-body text-muted">No negative marking</div></div></div>
+        </div>
+
+        <div class="intro-grid">
+          <div class="panel panel--raised col gap-24">
+            <h2 class="t-subhead" style="font-weight:500">Sections</h2>
+            <div class="intro-sections">
+              <div class="section-tile"><span class="num-badge">1</span><div><div class="t-body-medium text-strong">Quantitative Aptitude</div><div class="t-small text-muted">10 questions · 15 min</div></div></div>
+              <div class="section-tile"><span class="num-badge">2</span><div><div class="t-body-medium text-strong">Logical Reasoning</div><div class="t-small text-muted">10 questions · 15 min</div></div></div>
+              <div class="section-tile"><span class="num-badge">3</span><div><div class="t-body-medium text-strong">Verbal Ability</div><div class="t-small text-muted">10 questions · 15 min</div></div></div>
+            </div>
+            <hr class="divider">
+            <h2 class="t-subhead" style="font-weight:500">Test rules</h2>
+            <ol class="rules">
+              <li><span class="num-badge">1</span>Sections unlock in order. You can move between questions only within the active section.</li>
+              <li><span class="num-badge">2</span>Once an answer is submitted it is locked — you won’t be able to go back and change it.</li>
+              <li><span class="num-badge">3</span>The timer can’t be paused. Your test is auto-submitted when time runs out.</li>
+              <li><span class="num-badge">4</span>Don’t refresh, close this tab or exit full-screen while the test is in progress.</li>
+              <li><span class="num-badge">5</span>Only the on-screen workspace is allowed — no calculators, notes or outside help.</li>
+            </ol>
+            <hr class="divider">
+            <h2 class="t-subhead" style="font-weight:500">Question palette</h2>
+            <div class="legend">
+              <span class="legend__item"><span class="qbtn is-current" aria-hidden="true" style="display:grid;place-items:center;width:38px;height:38px">1</span>Current</span>
+              <span class="legend__item"><span class="qbtn is-answered" aria-hidden="true" style="display:grid;place-items:center;width:38px;height:38px">2</span>Answered</span>
+              <span class="legend__item"><span class="qbtn" aria-hidden="true" style="display:grid;place-items:center;width:38px;height:38px">3</span>Not answered</span>
+              <span class="legend__item"><span class="qbtn is-locked" aria-hidden="true" style="display:grid;place-items:center;width:38px;height:38px">4</span>Locked section</span>
+            </div>
+          </div>
+
+          <div class="panel panel--raised col gap-24">
+            <div class="callout callout--warning">
+              <i data-lucide="alert-triangle"></i>
+              <div class="col gap-4"><strong class="t-subhead">This test is AI-proctored</strong><span class="t-body text-muted">Keep your camera and microphone on for the entire test. Our AI monitors your session and flags suspicious activity. Repeated flags will disqualify you.</span></div>
+            </div>
+            <div class="col gap-12">
+              <p class="t-overline">What gets flagged</p>
+              <ul class="flag-list">
+                <li><i data-lucide="x"></i>Looking away or leaving the camera frame</li>
+                <li><i data-lucide="x"></i>Another person or voice in the room</li>
+                <li><i data-lucide="x"></i>Switching tabs, windows or apps</li>
+                <li><i data-lucide="x"></i>Phones, notes or other devices</li>
+              </ul>
+            </div>
+            <hr class="divider">
+            <div class="col gap-12">
+              <p class="t-overline">Device check</p>
+              <div class="device"><i data-lucide="video"></i><div class="grow"><div class="t-body-medium text-strong">Camera</div><div class="t-small text-muted">HD Webcam</div></div><span class="chip chip--success chip--dot">Connected</span></div>
+              <div class="device"><i data-lucide="mic"></i><div class="grow"><div class="t-body-medium text-strong">Microphone</div><div class="t-small text-muted">Default input</div></div><span class="chip chip--success chip--dot">Connected</span></div>
+            </div>
+            <label class="check t-body"><input type="checkbox" id="consent">I’ve read the rules and consent to camera, microphone and AI monitoring for the full test.</label>
+            <button class="btn btn--primary btn--xl btn--block" id="begin" disabled>Begin test <i data-lucide="arrow-right"></i></button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

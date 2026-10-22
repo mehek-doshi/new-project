@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Candidate sign in · Neuleap Aptitude Test</title>
+  <link rel="icon" href="../shared/img/neuleap-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../shared/css/tokens.css">
+  <link rel="stylesheet" href="../shared/css/base.css">
+  <link rel="stylesheet" href="../shared/css/components.css">
+  <link rel="stylesheet" href="app.css">
+  <script src="../shared/js/ui.js"></script>
+  <script defer src="../shared/vendor/lucide/lucide.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="login">
+  <div class="ta">
+    <header class="ta-header">
+      <a class="logo" href="index.html"><img src="../shared/img/neuleap-mark.svg" alt=""><span class="logo__word">Neuleap</span></a>
+      <span class="spacer"></span>
+      <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"></button>
+    </header>
+
+    <div class="glow" style="width:624px;height:624px;right:0;top:48px"></div>
+    <div class="glow" style="width:672px;height:672px;left:24px;bottom:-200px"></div>
+
+    <main class="ta-main">
+      <section class="panel login-card" aria-labelledby="login-title">
+        <div class="col">
+          <h1 class="t-title" id="login-title">Candidate sign in</h1>
+          <p class="t-body-lg text-muted">Use the credentials from your assessment invite.</p>
+        </div>
+
+        <form class="login-form" id="login-form" novalidate>
+          <div class="field">
+            <label class="field__label" for="full-name">Full name</label>
+            <div class="input-group">
+              <i data-lucide="user"></i>
+              <input class="input input--lg" id="full-name" autocomplete="name" placeholder="Aarav Mehta" value="Aarav Mehta" required>
+            </div>
+            <span class="field__hint" hidden>Enter your full name as it appears on your invite.</span>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="dob">Date of birth <span class="field__hint">DD / MM / YYYY</span></label>
+            <div class="input-group">
+              <i data-lucide="calendar"></i>
+              <input class="input input--lg" id="dob" inputmode="numeric" placeholder="14 / 03 / 2001" value="14 / 03 / 2001" required>
+            </div>
+            <span class="field__hint" hidden>Use the format DD / MM / YYYY.</span>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="candidate-id">Candidate ID</label>
+            <div class="input-group">
+              <i data-lucide="id-card"></i>
+              <input class="input input--lg" id="candidate-id" placeholder="NL-APT-26-0148" value="NL-APT-26-0148" required>
+            </div>
+            <span class="field__hint" hidden>Your candidate ID is in the invite email.</span>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="email">Registered email</label>
+            <div class="input-group">
+              <i data-lucide="mail"></i>
+              <input class="input input--lg" id="email" type="email" autocomplete="email" placeholder="aarav.mehta@gmail.com" value="aarav.mehta@gmail.com" required>
+            </div>
+            <span class="field__hint" hidden>Enter a valid email address.</span>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="password">Password</label>
+            <div class="input-group">
+              <i data-lucide="lock"></i>
+              <input class="input input--lg" id="password" type="password" autocomplete="current-password" value="assessment" required>
+              <button type="button" class="icon-btn icon-btn--plain input-group__end" id="toggle-password" aria-label="Show password"><i data-lucide="eye"></i></button>
+            </div>
+            <span class="field__hint" hidden>Enter your password.</span>
+          </div>
+
+          <button class="btn btn--primary btn--xl btn--block" type="submit">Sign in &amp; continue <i data-lucide="arrow-right"></i></button>
+        </form>
+
+        <p class="t-body text-muted" style="text-align:center">Trouble signing in? Contact <a href="mailto:hiring@neuleap.ai">hiring@neuleap.ai</a></p>
+      </section>
+    </main>
+
+    <footer class="ta-footer ta-footer--center">© 2026 Neuleap AI · Talents Scooper</footer>
+  </div>
+</body>
+</html>

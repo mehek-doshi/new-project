@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test submitted · Neuleap Aptitude Test</title>
+  <link rel="icon" href="../shared/img/neuleap-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../shared/css/tokens.css">
+  <link rel="stylesheet" href="../shared/css/base.css">
+  <link rel="stylesheet" href="../shared/css/components.css">
+  <link rel="stylesheet" href="app.css">
+  <script src="../shared/js/ui.js"></script>
+  <script defer src="../shared/vendor/lucide/lucide.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="result">
+  <div class="ta">
+    <header class="ta-header">
+      <a class="logo" href="index.html"><img src="../shared/img/neuleap-mark.svg" alt=""><span class="logo__word">Neuleap</span></a>
+      <span class="spacer"></span>
+      <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"></button>
+    </header>
+    <main class="ta-main">
+      <div class="glow" style="width:600px;height:504px;top:40px;left:50%;transform:translateX(-50%)"></div>
+      <section class="panel result">
+        <div class="result__icon"><i data-lucide="check"></i></div>
+        <div class="col gap-12">
+          <h1 class="t-page-title">Test submitted</h1>
+          <p class="t-body-lg text-muted">Thanks, <span data-first-name>Aarav</span>. Your responses have been recorded successfully.</p>
+        </div>
+        <div class="result__stats">
+          <div class="stat"><span class="stat__value" data-attempted>28 / 30</span><span class="stat__label">Attempted</span></div>
+          <div class="stat"><span class="stat__value" data-time-taken>41:18</span><span class="stat__label">Time taken</span></div>
+          <div class="stat"><span class="stat__value" data-finished-at>11:42 AM</span><span class="stat__label">Submitted at</span></div>
+        </div>
+        <div class="callout" style="text-align:left"><i data-lucide="info"></i><p class="t-body-lg">The hiring team will review your results and reach out by email within 3–5 working days. You can safely close this window now.</p></div>
+        <p class="t-small text-muted">Submission ID: <span data-session-id>TS-APT-0148-2611</span></p>
+        <button class="btn btn--secondary btn--xl btn--block" data-exit>Exit</button>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

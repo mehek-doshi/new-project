@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Neuleap Apps</title>
+  <link rel="icon" href="shared/img/neuleap-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="shared/css/tokens.css">
+  <link rel="stylesheet" href="shared/css/base.css">
+  <link rel="stylesheet" href="shared/css/components.css">
+  <link rel="stylesheet" href="shared/css/layout.css">
+  <script src="shared/js/ui.js"></script>
+  <script defer src="shared/vendor/lucide/lucide.min.js"></script>
+  <style>
+    .hub { max-width: 1200px; margin: 0 auto; padding: var(--space-48) var(--space-24); position: relative; }
+    .hub-head { display: flex; align-items: center; gap: var(--space-16); margin-bottom: var(--space-48); }
+    .app-card { gap: var(--space-16); text-decoration: none; color: inherit; transition: border-color 0.15s, transform 0.15s; }
+    .app-card:hover { border-color: var(--border-focus); transform: translateY(-2px); text-decoration: none; }
+    .app-card ul { margin: 0; padding-left: 18px; color: var(--text-muted); display: flex; flex-direction: column; gap: 4px; }
+    .swatches { display: flex; flex-wrap: wrap; gap: var(--space-8); }
+    .swatches span { width: 40px; height: 40px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); }
+  </style>
+</head>
+<body>
+  <main class="hub">
+    <div class="glow" style="width:700px;height:500px;right:-100px;top:-120px"></div>
+    <header class="hub-head">
+      <img src="shared/img/neuleap-mark.svg" alt="" width="48" height="48">
+      <div class="col gap-4 grow">
+        <h1 class="t-page-title">Neuleap apps</h1>
+        <p class="t-body-lg text-muted">Frontends built from the Figma files, sharing one design system.</p>
+      </div>
+      <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"></button>
+    </header>
+
+    <div class="grid grid-3">
+      <a class="card app-card" href="testing-app/index.html">
+        <span class="icon-tile"><i data-lucide="clipboard-check"></i></span>
+        <h2 class="t-title">Testing App</h2>
+        <p class="t-body text-muted">AI-proctored aptitude test for candidates.</p>
+        <ul class="t-small">
+          <li>Sign in → permissions → ID check</li>
+          <li>Instructions, 30 questions in 3 sections</li>
+          <li>Chart and code questions, finish drawer</li>
+          <li>Motion warning, submitted, disqualified</li>
+        </ul>
+        <span class="btn btn--outline btn--sm" style="align-self:flex-start">Open <i data-lucide="arrow-right"></i></span>
+      </a>
+      <a class="card app-card" href="talents-scooper/index.html">
+        <span class="icon-tile icon-tile--purple"><i data-lucide="users-round"></i></span>
+        <h2 class="t-title">Talents Scooper</h2>
+        <p class="t-body text-muted">Recruiter dashboard for the hiring pipeline.</p>
+        <ul class="t-small">
+          <li>New / Processing / Hired / Undecided / Rejected</li>
+          <li>Interview schedule + assign interviewer</li>
+          <li>Question banks and upload</li>
+          <li>Candidate Nest profile + round history</li>
+        </ul>
+        <span class="btn btn--outline btn--sm" style="align-self:flex-start">Open <i data-lucide="arrow-right"></i></span>
+      </a>
+      <a class="card app-card" href="tech-radar/index.html">
+        <span class="icon-tile icon-tile--success"><i data-lucide="radar"></i></span>
+        <h2 class="t-title">Tech Radar</h2>
+        <p class="t-body text-muted">Discover, test and share emerging technology.</p>
+        <ul class="t-small">
+          <li>Sign in, discoveries, invitations</li>
+          <li>New use case form, project artifacts</li>
+          <li>Profile with badges and certificates</li>
+          <li>Admin console (8 screens)</li>
+        </ul>
+        <span class="btn btn--outline btn--sm" style="align-self:flex-start">Open <i data-lucide="arrow-right"></i></span>
+      </a>
+    </div>
+
+    <section class="card gap-16" style="margin-top:24px">
+      <h2 class="t-title">Shared design system</h2>
+      <p class="t-body text-muted">All three apps load the same <code>shared/css</code> tokens and components (Roboto, radius 4/8/12/full, buttons 32/40/48, pill tabs, tinted status chips, 56px table rows), with dark and light themes.</p>
+      <div class="swatches" aria-label="Palette">
+        <span style="background:var(--surface-canvas)" title="surface/canvas"></span>
+        <span style="background:var(--surface-panel)" title="surface/panel"></span>
+        <span style="background:var(--surface-raised)" title="surface/raised"></span>
+        <span style="background:var(--blue-100)" title="blue"></span>
+        <span style="background:var(--green-100)" title="green"></span>
+        <span style="background:var(--amber-100)" title="amber"></span>
+        <span style="background:var(--red-100)" title="red"></span>
+        <span style="background:var(--violet-100)" title="violet"></span>
+      </div>
+      <div class="row wrap gap-12">
+        <button class="btn btn--primary">Primary</button>
+        <button class="btn btn--secondary">Secondary</button>
+        <button class="btn btn--outline">Outline</button>
+        <button class="btn btn--destructive">Destructive</button>
+        <button class="btn btn--ghost">Ghost</button>
+        <span class="chip chip--success">Success</span>
+        <span class="chip chip--warning">Warning</span>
+        <span class="chip chip--error">Error</span>
+        <span class="chip chip--info">Info</span>
+        <span class="chip">Neutral</span>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

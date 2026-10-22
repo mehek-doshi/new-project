@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Identity verification · Neuleap Aptitude Test</title>
+  <link rel="icon" href="../shared/img/neuleap-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../shared/css/tokens.css">
+  <link rel="stylesheet" href="../shared/css/base.css">
+  <link rel="stylesheet" href="../shared/css/components.css">
+  <link rel="stylesheet" href="app.css">
+  <script src="../shared/js/ui.js"></script>
+  <script defer src="../shared/vendor/lucide/lucide.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="verify">
+  <div class="ta">
+    <header class="ta-header">
+      <a class="logo" href="index.html"><img src="../shared/img/neuleap-mark.svg" alt=""><span class="logo__word">Neuleap</span></a>
+      <span class="spacer"></span>
+      <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"></button>
+    </header>
+    <div class="glow" style="width:700px;height:500px;right:120px;top:-160px"></div>
+    <main class="ta-main">
+      <section class="verify">
+        <div class="capture" id="capture">
+          <div class="capture__frame capture__frame--id"></div>
+          <div class="capture__badge" id="capture-badge"></div>
+          <div class="capture__label" id="capture-label"></div>
+        </div>
+        <aside class="panel panel--raised verify__side">
+          <div class="col gap-12">
+            <p class="t-overline">Identity verification</p>
+            <h1 class="t-page-title" id="v-title">Capture your ID</h1>
+            <p class="t-body-lg text-muted" id="v-body"></p>
+          </div>
+          <div class="vsteps">
+            <div class="vstep"><span class="icon-tile icon-tile--sm"></span><div class="grow"><div class="t-body-medium text-strong">Photo ID</div><div class="t-small text-muted">Government-issued, clearly readable</div></div></div>
+            <div class="vstep"><span class="icon-tile icon-tile--sm"></span><div class="grow"><div class="t-body-medium text-strong">Face match</div><div class="t-small text-muted">Compared with the photo on your ID</div></div></div>
+          </div>
+          <ul class="checklist t-body">
+            <li><i data-lucide="sun"></i>Sit in a well-lit room</li>
+            <li><i data-lucide="glasses"></i>Remove caps, masks and tinted glasses</li>
+            <li><i data-lucide="user-round-check"></i>Only you should be in the frame</li>
+          </ul>
+          <div class="col gap-12" style="margin-top:auto">
+            <button class="btn btn--primary btn--xl btn--block" id="v-action"></button>
+            <button class="btn btn--ghost btn--block" id="v-retake" hidden><i data-lucide="rotate-ccw"></i>Retake</button>
+          </div>
+        </aside>
+      </section>
+    </main>
+    <footer class="ta-footer"><span>Neuleap Online Assessment © 2026</span><span>Your images are used only to verify this test session.</span></footer>
+  </div>
+</body>
+</html>

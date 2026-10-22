@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in · Tech Radar</title>
+  <link rel="icon" href="../shared/img/neuleap-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../shared/css/tokens.css">
+  <link rel="stylesheet" href="../shared/css/base.css">
+  <link rel="stylesheet" href="../shared/css/components.css">
+  <link rel="stylesheet" href="../shared/css/layout.css">
+  <link rel="stylesheet" href="app.css">
+  <script src="../shared/js/ui.js"></script>
+  <script defer src="../shared/vendor/lucide/lucide.min.js"></script>
+  <script defer src="data.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="signin">
+  <main class="signin">
+    <div class="glow" style="width:800px;height:700px;left:50%;top:50%;transform:translate(-50%,-50%)"></div>
+    <section class="panel signin-card" aria-labelledby="signin-title">
+      <div class="row gap-16">
+        <img src="../shared/img/neuleap-mark.svg" alt="" width="48" height="48">
+        <div class="col gap-4">
+          <h1 class="t-page-title" id="signin-title">Tech Radar</h1>
+          <p class="t-body text-muted">Discover, test and share emerging technology at Neuleap</p>
+        </div>
+      </div>
+      <button class="btn btn--secondary btn--microsoft btn--lg btn--block" id="ms-signin">
+        <span class="ms-logo" aria-hidden="true"><i style="background:#f25022"></i><i style="background:#7fba00"></i><i style="background:#00a4ef"></i><i style="background:#ffb900"></i></span>
+        Sign in with Microsoft
+      </button>
+      <p class="t-small text-muted" style="text-align:center">Use your Neuleap work account. Access is managed by IT through Entra ID.</p>
+    </section>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle theme" style="position:fixed;top:24px;right:24px"></button>
+  </main>
+</body>
+</html>

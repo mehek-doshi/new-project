@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Question Banks · Talents Scooper</title>
+  <link rel="icon" href="../shared/img/neuleap-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../shared/css/tokens.css">
+  <link rel="stylesheet" href="../shared/css/base.css">
+  <link rel="stylesheet" href="../shared/css/components.css">
+  <link rel="stylesheet" href="../shared/css/layout.css">
+  <link rel="stylesheet" href="app.css">
+  <script src="../shared/js/ui.js"></script>
+  <script defer src="../shared/vendor/lucide/lucide.min.js"></script>
+  <script defer src="data.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="app" data-nav="banks" data-title="Question Banks">
+    <aside class="sidebar" data-sidebar></aside>
+    <div class="main">
+      <header class="topbar ts-topbar" data-topbar></header>
+      <main class="content">
+        <div class="toolbar">
+          <div class="tabs" id="role-tabs" role="tablist" aria-label="Role"></div>
+          <span class="spacer"></span>
+          <button class="btn btn--primary" data-open="upload-modal"><i data-lucide="upload"></i>Upload Question Bank</button>
+        </div>
+        <div class="qb-layout">
+          <section class="card card--flush">
+            <div class="card__header" style="padding:24px 24px 16px">
+              <div class="grow"><p class="t-overline">Queued interviews</p><h2 class="t-title">Assign a bank to each interview</h2></div>
+            </div>
+            <div class="table-wrap" style="border-radius:0;border-left:0;border-right:0;border-bottom:0">
+              <table class="table" data-searchable>
+                <thead><tr><th>Name</th><th>Role</th><th>Stage</th><th>Interviewer</th><th>Action</th></tr></thead>
+                <tbody id="queue-body"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="card gap-16">
+            <div class="card__header">
+              <div class="grow"><p class="t-overline">Question bank</p><h2 class="t-title"><span id="selected-count">8</span> questions selected</h2></div>
+              <label class="select select--square"><i data-lucide="folder-open"></i><span class="sr-only">Assign existing bank</span><select id="bank-select"></select><i data-lucide="chevron-down"></i></label>
+            </div>
+            <div class="setting">
+              <div class="col gap-4 grow">
+                <strong class="t-body-medium text-strong">Randomly send questions with answers to interviewer</strong>
+                <span class="t-small text-muted">A random set is sent automatically at the time of each interview</span>
+              </div>
+              <label class="switch"><input type="checkbox" id="random-send" checked aria-label="Randomly send questions"></label>
+            </div>
+            <div class="tag-row" id="tag-filter" aria-label="Filter by tag"></div>
+            <div id="question-list"></div>
+            <form class="row gap-12 wrap" id="new-question-form">
+              <input class="input grow" id="new-question" placeholder="Type new question" aria-label="New question" style="min-width:240px">
+              <label class="select select--square"><span class="sr-only">Tag</span><select id="new-question-tag"></select><i data-lucide="chevron-down"></i></label>
+              <button class="btn btn--outline" type="submit"><i data-lucide="plus"></i>Add</button>
+            </form>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+  <div class="modal" id="upload-modal" role="dialog" aria-labelledby="upload-title" aria-hidden="true" style="width:min(460px,calc(100vw - 32px))">
+    <div class="modal__header">
+      <div class="grow"><h2 class="t-title" id="upload-title">Upload Question Bank</h2><p class="t-body text-muted">Choose a topic, then pick your file.</p></div>
+      <button class="icon-btn icon-btn--round" data-close aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+    <div class="modal__body">
+      <p class="t-overline">Upload in:</p>
+      <div class="topic-list" id="topic-list"></div>
+      <div class="row gap-8"><input class="input grow" id="new-topic" placeholder="New topic name" aria-label="New topic name"><button class="btn btn--ghost" id="add-topic"><i data-lucide="plus"></i>Add Topic</button></div>
+      <div class="dropzone" id="dropzone">
+        <i data-lucide="file-up"></i>
+        <span class="t-body-medium text-strong">Drop a file here or</span>
+        <button class="btn btn--secondary btn--sm" id="pick-file"><i data-lucide="folder"></i>Select File</button>
+        <span class="t-small" id="file-name">CSV or XLSX, up to 5 MB</span>
+        <input type="file" id="bank-file" accept=".csv,.xlsx,.xls" hidden>
+      </div>
+    </div>
+    <button class="btn btn--primary btn--lg btn--block" id="upload-go" disabled>Upload</button>
+  </div>
+</body>
+</html>

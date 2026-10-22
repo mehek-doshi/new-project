@@ -1,0 +1,133 @@
+/*
+ * Neuleap design tokens
+ * Source: Figma "Design System" file (Components + Neuleap Design System pages).
+ * Dark is the default theme; light is applied with <html data-theme="light">.
+ */
+
+:root {
+  /* Palette (Colours · Dark / Light) */
+  --blue-100: #4a86e7;
+  --blue-75: rgba(74, 134, 231, 0.75);
+  --blue-60: rgba(74, 134, 231, 0.6);
+  --blue-45: rgba(74, 134, 231, 0.45);
+  --blue-30: rgba(74, 134, 231, 0.3);
+  --blue-15: rgba(74, 134, 231, 0.15);
+  --green-100: #24af57;
+  --green-15: rgba(36, 175, 87, 0.15);
+  --red-100: #de4444;
+  --red-15: rgba(222, 68, 68, 0.15);
+  --amber-100: #c79f27;
+  --amber-15: rgba(199, 159, 39, 0.15);
+  --violet-100: #935fef;
+  --violet-15: rgba(147, 95, 239, 0.15);
+
+  /* Spacing */
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-3xl: 24px;
+  --radius-full: 999px;
+
+  /* Typography */
+  --font-family: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Layout */
+  --sidebar-width: 344px;
+  --sidebar-collapsed-width: 96px;
+  --topbar-height: 64px;
+  --header-height: 86px;
+
+  /* Semantic colours — Dark (default) */
+  --surface-canvas: #020b19;
+  --surface-panel: #1e2942;
+  --surface-raised: #25314a;
+  --surface-inset: #0b1527;
+  --surface-scrim: rgba(2, 11, 25, 0.72);
+
+  --border-subtle: #25314a;
+  --border-strong: #3a4a6b;
+  --border-outline: #ffffff;
+  --border-focus: #74a9ff;
+  --focus-ring: rgba(74, 134, 231, 0.25);
+
+  --brand-primary: #4a86e7;
+  --brand-primary-hover: #3d77d6;
+  --brand-tint: rgba(74, 134, 231, 0.2);
+  --brand-tint-soft: rgba(74, 134, 231, 0.14);
+
+  --text-strong: #ffffff;
+  --text-primary: #eef3fb;
+  --text-muted: #93a3b8;
+  --text-disabled: #64748b;
+  --text-link: #4a86e7;
+  --text-on-brand: #ffffff;
+
+  --status-success: #22c55e;
+  --status-success-text: #22c55e;
+  --status-success-tint: rgba(34, 197, 94, 0.14);
+  --status-warning: #ebb208;
+  --status-warning-text: #ebb208;
+  --status-warning-tint: rgba(235, 178, 8, 0.14);
+  --status-error: #de4444;
+  --status-error-text: #de4444;
+  --status-error-tint: rgba(222, 68, 68, 0.14);
+  --status-info: #4a86e7;
+  --status-info-text: #4a86e7;
+  --status-info-tint: rgba(74, 134, 231, 0.14);
+  --status-purple: #935fef;
+  --status-purple-tint: rgba(147, 95, 239, 0.14);
+
+  /* Chip label used on solid status fills (Testing App · Chip) */
+  --chip-solid-text: #1b2540;
+
+  /* Effects */
+  --shadow-card: 0 28.8px 57.6px rgba(0, 0, 0, 0.35);
+  --shadow-popup: 0 16px 40px rgba(0, 0, 0, 0.4);
+  --shadow-drawer: -24px 0 64px rgba(0, 0, 0, 0.45);
+  --glow: rgba(74, 134, 231, 0.18);
+
+  color-scheme: dark;
+}
+
+/* Semantic colours — Light */
+:root[data-theme="light"] {
+  --surface-canvas: #ffffff;
+  --surface-panel: #e2e8f0;
+  --surface-raised: #cbd5e1;
+  --surface-inset: #f1f5f9;
+  --surface-scrim: rgba(2, 11, 25, 0.45);
+
+  --border-subtle: #cbd5e1;
+  --border-strong: #94a3b8;
+  --border-outline: #020b19;
+  --border-focus: #4a86e7;
+
+  --text-strong: #020b19;
+  --text-primary: #131c2f;
+  --text-muted: #64748b;
+  --text-disabled: #94a3b8;
+
+  --status-success-text: #15803d;
+  --status-warning-text: #a16207;
+
+  --shadow-card: 0 20px 48px rgba(15, 23, 42, 0.12);
+  --shadow-popup: 0 12px 32px rgba(15, 23, 42, 0.16);
+  --shadow-drawer: -16px 0 48px rgba(15, 23, 42, 0.18);
+  --glow: rgba(74, 134, 231, 0.12);
+
+  color-scheme: light;
+}

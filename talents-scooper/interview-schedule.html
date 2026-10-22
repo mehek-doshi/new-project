@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Interview Schedule · Talents Scooper</title>
+  <link rel="icon" href="../shared/img/neuleap-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../shared/css/tokens.css">
+  <link rel="stylesheet" href="../shared/css/base.css">
+  <link rel="stylesheet" href="../shared/css/components.css">
+  <link rel="stylesheet" href="../shared/css/layout.css">
+  <link rel="stylesheet" href="app.css">
+  <script src="../shared/js/ui.js"></script>
+  <script defer src="../shared/vendor/lucide/lucide.min.js"></script>
+  <script defer src="data.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="app" data-nav="schedule" data-title="Interview Schedule">
+    <aside class="sidebar" data-sidebar></aside>
+    <div class="main">
+      <header class="topbar ts-topbar" data-topbar></header>
+      <main class="content">
+        <div class="toolbar">
+          <div class="col gap-4 grow">
+            <h2 class="t-title">Upcoming interviews</h2>
+            <p class="t-body text-muted">Suggested interviewers are picked from availability and this week’s load. Assign or reassign to confirm a slot.</p>
+          </div>
+          <div class="row wrap t-small text-muted">
+            <span class="chip chip--dot chip--success">Open</span>
+            <span class="chip chip--dot chip--info">Confirmed</span>
+            <span class="chip chip--dot chip--warning">Tentative</span>
+            <span class="chip chip--dot chip--error">Busy</span>
+            <span class="chip chip--dot">Pending</span>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="table" data-sortable data-searchable>
+            <thead><tr><th>Name</th><th class="sortable">Aging<i data-lucide="arrow-up-down"></i></th><th class="sortable">Role<i data-lucide="arrow-up-down"></i></th><th>Stage</th><th>Suggested interviewer</th><th>Slot status</th><th>Action</th></tr></thead>
+            <tbody id="schedule-body"></tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+  <div class="modal" id="assign-modal" role="dialog" aria-labelledby="assign-title" aria-hidden="true">
+    <div class="modal__header">
+      <div class="grow">
+        <h2 class="t-title" id="assign-title">Assign Interviewer</h2>
+        <p class="t-body text-muted" id="assign-sub"></p>
+      </div>
+      <button class="icon-btn icon-btn--round" data-close aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+    <div class="modal__body" id="interviewer-list"></div>
+    <button class="btn btn--primary btn--lg btn--block" id="confirm-assign">Confirm Assignment</button>
+  </div>
+</body>
+</html>

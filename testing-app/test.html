@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aptitude test · Neuleap</title>
+  <link rel="icon" href="../shared/img/neuleap-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../shared/css/tokens.css">
+  <link rel="stylesheet" href="../shared/css/base.css">
+  <link rel="stylesheet" href="../shared/css/components.css">
+  <link rel="stylesheet" href="app.css">
+  <script src="../shared/js/ui.js"></script>
+  <script defer src="../shared/vendor/lucide/lucide.min.js"></script>
+  <script defer src="questions.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="test">
+  <div class="ta" data-test style="height:100vh">
+    <header class="ta-header">
+      <a class="logo" href="#" aria-label="Neuleap"><img src="../shared/img/neuleap-mark.svg" alt=""><span class="logo__word">Neuleap</span></a>
+      <span class="spacer"></span>
+      <span class="t-body text-muted" style="margin-right:8px"><span data-full-name>Aarav Mehta</span> · <span data-candidate-id>NL-APT-26-0148</span></span>
+      <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"></button>
+    </header>
+
+    <div class="test" style="min-height:0">
+      <aside class="panel panel--raised test-side" aria-label="Test progress">
+        <div class="timer">
+          <div class="row"><i data-lucide="clock" style="width:16px;height:16px;color:var(--text-muted)"></i><span class="t-overline">Time remaining</span></div>
+          <div class="row" style="align-items:baseline"><span class="timer__value" id="timer-value">45:00</span><span class="t-body text-muted">of 45:00</span></div>
+          <div class="progress progress--thin"><span id="timer-bar" style="width:100%"></span></div>
+        </div>
+        <div class="proctor" id="proctor">
+          <span class="proctor__dot"></span>
+          <span class="t-body grow" id="proctor-text">Proctoring active</span>
+          <i data-lucide="video"></i><i data-lucide="mic"></i>
+        </div>
+        <hr class="divider">
+        <div class="col gap-24" id="palette"></div>
+        <hr class="divider">
+        <div class="legend t-small" style="gap:12px 24px">
+          <span class="legend__item"><span class="swatch swatch--current"></span>Current</span>
+          <span class="legend__item"><span class="swatch swatch--answered"></span>Answered</span>
+          <span class="legend__item"><span class="swatch"></span>Not answered</span>
+          <span class="legend__item"><span class="swatch swatch--locked"></span>Locked</span>
+        </div>
+        <button class="btn btn--destructive btn--block" id="open-finish"><i data-lucide="flag"></i>Finish test</button>
+      </aside>
+
+      <section class="panel panel--raised qcard" aria-live="polite">
+        <div class="qcard__head">
+          <div class="col gap-4 grow">
+            <p class="t-overline" id="q-section">Section 1 · Quantitative Aptitude</p>
+            <h1 class="t-page-title" id="q-number">Question 1 of 10</h1>
+          </div>
+          <span class="chip chip--lg chip--outline">+1 mark</span>
+          <span class="chip chip--lg chip--info" id="q-type">Single choice</span>
+        </div>
+        <div id="q-body"></div>
+      </section>
+    </div>
+
+    <footer class="test-footer">
+      <button class="btn btn--secondary btn--xl" id="prev"><i data-lucide="arrow-left"></i>Previous</button>
+      <span class="spacer"></span>
+      <div class="row text-muted t-body"><i data-lucide="info" style="width:18px;height:18px"></i>Careful — once an answer is submitted, you can’t go back to it.</div>
+      <span class="spacer"></span>
+      <button class="btn btn--outline btn--xl" id="next">Next <i data-lucide="arrow-right"></i></button>
+      <button class="btn btn--primary btn--xl" id="submit">Submit <i data-lucide="check"></i></button>
+    </footer>
+  </div>
+
+  <div class="webcam" id="webcam" aria-label="Your camera preview">
+    <div class="webcam__placeholder" id="webcam-placeholder"><i data-lucide="user-round"></i></div>
+    <span class="live-chip">REC</span>
+    <span class="live-chip live-chip--warning flag" id="webcam-flag" hidden><i data-lucide="alert-triangle"></i><span id="webcam-flag-text">Motion</span></span>
+    <div class="webcam__bar"><span class="grow"><span data-full-name>Aarav Mehta</span> (You)</span><i data-lucide="mic"></i><i data-lucide="video"></i></div>
+  </div>
+
+  <div class="motion-popup" id="motion-popup" role="alertdialog" aria-labelledby="motion-title">
+    <div class="popup">
+      <span class="icon-tile icon-tile--warning"><i data-lucide="scan-eye"></i></span>
+      <div class="col grow">
+        <div class="row wrap"><strong class="t-subhead" id="motion-title">Motion detected</strong><span class="chip chip--warning" id="motion-tag">Warning 1 of 3</span></div>
+        <p class="t-body text-muted" id="motion-text"></p>
+      </div>
+      <button class="btn btn--primary btn--lg" id="motion-ok">I understand</button>
+    </div>
+  </div>
+
+  <aside class="drawer" id="finish-drawer" aria-labelledby="finish-title" aria-hidden="true">
+    <div class="drawer__header">
+      <i data-lucide="alert-triangle" style="width:24px;height:24px;color:var(--status-warning-text)"></i>
+      <h2 class="t-title grow" id="finish-title" style="font-weight:500">Finish test?</h2>
+      <span class="row t-body text-muted"><i data-lucide="clock" style="width:18px;height:18px"></i>Remaining time: <strong class="text-strong" id="drawer-time">44:37</strong></span>
+      <button class="icon-btn icon-btn--round" data-close aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+    <div class="drawer__body">
+      <div class="row gap-24 wrap" style="padding:40px 40px 32px;align-items:center">
+        <div class="donut">
+          <svg viewBox="0 0 42 42" aria-hidden="true">
+            <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--border-strong)" stroke-width="4"></circle>
+            <circle id="donut-arc" cx="21" cy="21" r="15.9155" fill="none" stroke="var(--brand-primary)" stroke-width="4" stroke-linecap="round" stroke-dasharray="0 100"></circle>
+          </svg>
+          <div class="donut__label"><span class="t-page-title" id="donut-label">0/30</span><span class="t-small text-muted">answered</span></div>
+        </div>
+        <div class="col gap-16">
+          <p class="t-overline">Your test summary</p>
+          <div class="row" style="align-items:baseline;gap:12px"><span class="t-page-title">30</span><span class="t-body text-muted">Total questions</span></div>
+          <div class="summary-list">
+            <div class="row"><i style="background:var(--status-success)"></i>Answered: <strong class="text-strong" id="sum-answered">0/30</strong></div>
+            <div class="row"><i style="background:var(--status-warning)"></i>Marked for review: <strong class="text-strong" id="sum-review">0/30</strong></div>
+            <div class="row"><i style="background:var(--border-strong)"></i>Not answered: <strong class="text-strong" id="sum-open">30/30</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="col gap-16" style="padding:32px 40px;background:var(--surface-raised);border-top:1px solid var(--border-subtle);min-height:100%">
+        <h3 class="t-subhead" style="font-weight:500">Section summary</h3>
+        <div class="table-wrap">
+          <table class="table table--compact">
+            <thead><tr><th style="width:40px">#</th><th>Section</th><th>Status</th></tr></thead>
+            <tbody id="sum-sections"></tbody>
+          </table>
+        </div>
+        <div class="callout callout--warning"><i data-lucide="info"></i><p>Once you finish, you can’t return to the test. Unanswered questions will be marked as not attempted.</p></div>
+      </div>
+    </div>
+    <div class="drawer__footer">
+      <button class="btn btn--danger btn--xl" id="finish-test">Finish test</button>
+      <button class="btn btn--secondary btn--xl" data-close>No, back to test</button>
+    </div>
+  </aside>
+</body>
+</html>
