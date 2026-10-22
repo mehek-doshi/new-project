@@ -73,7 +73,7 @@
   gap: var(--space-16);
   padding: var(--space-64) clamp(var(--space-24), 6vw, 120px);
   border-right: 1px solid var(--border-subtle);
-  background: var(--surface-inset);
+  background: var(--surface-canvas);
 }
 .pretest__hello { font-size: 20px; color: var(--text-muted); }
 .pretest__welcome { font-size: 24px; color: var(--text-strong); }
@@ -104,7 +104,7 @@
 .stepper__dot svg { width: 14px; height: 14px; }
 .stepper__item.is-active { color: var(--text-strong); }
 .stepper__item.is-active .stepper__dot { border-color: var(--border-focus); background: var(--brand-tint); color: var(--text-link); }
-.stepper__item.is-done .stepper__dot { border-color: var(--status-success); background: var(--status-success); color: #fff; }
+.stepper__item.is-done .stepper__dot { border-color: var(--status-success); background: var(--status-success); color: var(--text-on-brand); }
 .stepper__line { flex: 1; min-width: 16px; height: 1px; background: var(--border-strong); }
 
 .perm-visual {
@@ -114,7 +114,7 @@
   height: 280px;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-2xl);
-  background: var(--surface-inset);
+  background: var(--surface-canvas);
   overflow: hidden;
 }
 .perm-visual__icon {
@@ -125,11 +125,11 @@
   border-radius: 50%;
   background: var(--brand-tint-soft);
   color: var(--text-link);
-  box-shadow: 0 0 0 16px color-mix(in srgb, var(--brand-tint-soft) 50%, transparent);
+  box-shadow: 0 0 0 16px var(--blue-15);
 }
 .perm-visual__icon svg { width: 48px; height: 48px; }
 .perm-visual.is-verifying .perm-visual__icon { animation: pulse 1.2s infinite; }
-.perm-visual.is-done .perm-visual__icon { background: var(--status-success-tint); color: var(--status-success-text); box-shadow: 0 0 0 16px color-mix(in srgb, var(--status-success-tint) 50%, transparent); }
+.perm-visual.is-done .perm-visual__icon { background: var(--status-success-tint); color: var(--status-success-text); box-shadow: 0 0 0 16px var(--green-15); }
 .perm-visual video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
 .meter { display: flex; align-items: flex-end; gap: 4px; height: 32px; }
@@ -156,7 +156,7 @@
   aspect-ratio: 16 / 10;
   border-radius: var(--radius-2xl);
   border: 1px solid var(--border-subtle);
-  background: radial-gradient(circle at 50% 40%, #1d2a44, #050d1c 70%);
+  background: var(--surface-canvas);
   overflow: hidden;
   display: grid;
   place-items: center;
@@ -165,12 +165,13 @@
 .capture__frame {
   position: relative;
   z-index: 1;
-  border: 2px dashed rgba(255, 255, 255, 0.7);
+  border: 2px dashed var(--white-75);
   border-radius: var(--radius-lg);
 }
 .capture__frame--id { width: 56%; aspect-ratio: 85.6 / 54; }
 .capture__frame--face { width: 32%; aspect-ratio: 3 / 4; border-radius: 50%; }
 .capture.is-ok .capture__frame { border-style: solid; border-color: var(--status-success); }
+.capture__label .chip { background: var(--black-60); color: var(--white-100); border-color: var(--white-30); }
 .capture__label {
   position: absolute;
   z-index: 1;
@@ -267,7 +268,7 @@
   font-weight: 500;
 }
 .qbtn:hover { border-color: var(--border-focus); }
-.qbtn.is-current { background: var(--brand-primary); border-color: var(--brand-primary); color: #fff; }
+.qbtn.is-current { background: var(--brand-primary); border-color: var(--brand-primary); color: var(--text-on-brand); }
 .qbtn.is-answered { background: var(--status-success-tint); border-color: var(--status-success); color: var(--status-success-text); }
 .qbtn.is-locked,
 .qbtn:disabled { background: var(--surface-raised); border-color: var(--surface-raised); color: var(--text-disabled); cursor: not-allowed; }
@@ -315,7 +316,7 @@
 .option__label { font-size: 19px; line-height: 26px; color: var(--text-strong); }
 .option.is-selected { border-color: var(--border-focus); background: var(--brand-tint-soft); }
 .option.is-selected .option__radio { border-color: var(--brand-primary); background: var(--brand-primary); box-shadow: inset 0 0 0 4px var(--surface-panel); }
-.option.is-selected .option__letter { background: var(--brand-primary); color: #fff; }
+.option.is-selected .option__letter { background: var(--brand-primary); color: var(--text-on-brand); }
 .options.is-locked .option { cursor: default; opacity: 0.75; }
 .option input:focus-visible + .option__radio { outline: 2px solid var(--border-focus); outline-offset: 2px; }
 
@@ -331,7 +332,7 @@
   position: relative;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  background: var(--surface-inset);
+  background: var(--surface-canvas);
   font-family: var(--font-mono);
   font-size: 15px;
   line-height: 30px;
@@ -339,10 +340,10 @@
 }
 .code__gutter { padding: var(--space-16) 0; text-align: center; color: var(--text-disabled); background: var(--surface-raised); user-select: none; }
 .code pre { margin: 0; padding: var(--space-16) var(--space-24); color: var(--text-primary); white-space: pre; }
-.code .tok-k { color: #c792ea; }
-.code .tok-t { color: #74a9ff; }
-.code .tok-n { color: #f78c6c; }
-.code .tok-s { color: #c3e88d; }
+.code .tok-k { color: var(--violet-100); }
+.code .tok-t { color: var(--blue-100); }
+.code .tok-n { color: var(--amber-100); }
+.code .tok-s { color: var(--green-100); }
 .code .tok-c { color: var(--text-muted); }
 .code__lang { position: absolute; top: 14px; right: 14px; }
 
@@ -366,12 +367,12 @@
   height: 189px;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: radial-gradient(circle at 50% 35%, #2c3b5c, #0b1527 70%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--surface-raised);
+  border: 1px solid var(--white-15);
   box-shadow: var(--shadow-popup);
 }
 .webcam video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
-.webcam__placeholder { position: absolute; inset: 0; display: grid; place-items: center; color: rgba(255, 255, 255, 0.35); }
+.webcam__placeholder { position: absolute; inset: 0; display: grid; place-items: center; color: var(--white-30); }
 .webcam__placeholder svg { width: 64px; height: 64px; }
 .webcam .live-chip { position: absolute; top: 12px; left: 12px; }
 .webcam .flag { position: absolute; top: 12px; right: 12px; }
@@ -385,8 +386,8 @@
   gap: var(--space-8);
   height: 36px;
   padding: 0 12px;
-  background: linear-gradient(transparent, rgba(2, 11, 25, 0.85));
-  color: #fff;
+  background: var(--black-60);
+  color: var(--white-100);
   font-size: 12px;
 }
 .webcam__bar svg { width: 18px; height: 18px; }
@@ -431,7 +432,7 @@
   height: 86px;
   border-radius: 50%;
   background: var(--status-success);
-  color: #fff;
+  color: var(--text-on-brand);
   box-shadow: 0 0 0 14px var(--status-success-tint);
   margin: 14px 0 8px;
 }

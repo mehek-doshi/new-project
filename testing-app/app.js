@@ -231,7 +231,7 @@
       $("#capture-badge").innerHTML = verified
         ? '<span class="chip chip--success chip--lg"><i data-lucide="check"></i>' + (step.key === "id" ? "ID verified" : "Face matched") + "</span>"
         : '<span class="live-chip">LIVE</span>';
-      $("#capture-label").innerHTML = verified ? "" : '<span class="chip chip--outline chip--lg" style="background:rgba(2,11,25,.6);color:#fff">' + (step.key === "id" ? "Align your ID within the frame" : "Center your face in the oval") + "</span>";
+      $("#capture-label").innerHTML = verified ? "" : '<span class="chip chip--outline chip--lg">' + (step.key === "id" ? "Align your ID within the frame" : "Center your face in the oval") + "</span>";
       $("#v-title").textContent = verified ? (step.key === "id" ? "ID verified" : "Identity confirmed") : step.title;
       $("#v-body").textContent = verified
         ? (step.key === "id" ? "We could read your ID clearly. Next, take a quick photo so we can match it." : "Your face matches the photo on your ID. You’re ready to read the test instructions.")

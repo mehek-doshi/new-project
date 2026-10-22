@@ -20,6 +20,12 @@
   --amber-15: rgba(199, 159, 39, 0.15);
   --violet-100: #935fef;
   --violet-15: rgba(147, 95, 239, 0.15);
+  --white-100: #ffffff;
+  --white-75: rgba(255, 255, 255, 0.75);
+  --white-30: rgba(255, 255, 255, 0.3);
+  --white-15: rgba(255, 255, 255, 0.15);
+  --black-60: rgba(0, 0, 0, 0.6);
+  --black-45: rgba(0, 0, 0, 0.45);
 
   /* Spacing */
   --space-4: 4px;
@@ -55,8 +61,7 @@
   --surface-canvas: #020b19;
   --surface-panel: #1e2942;
   --surface-raised: #25314a;
-  --surface-inset: #0b1527;
-  --surface-scrim: rgba(2, 11, 25, 0.72);
+  --surface-scrim: var(--black-60);
 
   --border-subtle: #25314a;
   --border-strong: #3a4a6b;
@@ -65,9 +70,8 @@
   --focus-ring: rgba(74, 134, 231, 0.25);
 
   --brand-primary: #4a86e7;
-  --brand-primary-hover: #3d77d6;
   --brand-tint: rgba(74, 134, 231, 0.2);
-  --brand-tint-soft: rgba(74, 134, 231, 0.14);
+  --brand-tint-soft: var(--status-info-tint);
 
   --text-strong: #ffffff;
   --text-primary: #eef3fb;
@@ -98,7 +102,7 @@
   --shadow-card: 0 28.8px 57.6px rgba(0, 0, 0, 0.35);
   --shadow-popup: 0 16px 40px rgba(0, 0, 0, 0.4);
   --shadow-drawer: -24px 0 64px rgba(0, 0, 0, 0.45);
-  --glow: rgba(74, 134, 231, 0.18);
+  --glow: var(--blue-15);
 
   color-scheme: dark;
 }
@@ -108,8 +112,7 @@
   --surface-canvas: #ffffff;
   --surface-panel: #e2e8f0;
   --surface-raised: #cbd5e1;
-  --surface-inset: #f1f5f9;
-  --surface-scrim: rgba(2, 11, 25, 0.45);
+  --surface-scrim: var(--black-45);
 
   --border-subtle: #cbd5e1;
   --border-strong: #94a3b8;
@@ -127,7 +130,18 @@
   --shadow-card: 0 20px 48px rgba(15, 23, 42, 0.12);
   --shadow-popup: 0 12px 32px rgba(15, 23, 42, 0.16);
   --shadow-drawer: -16px 0 48px rgba(15, 23, 42, 0.18);
-  --glow: rgba(74, 134, 231, 0.12);
 
   color-scheme: light;
 }
+
+/*
+ * Testing App surfaces (Design System · "Testing App · Panel / Input / Answer option").
+ * The candidate flow uses its own darker panel set; light theme uses the shared light tokens.
+ */
+:root:not([data-theme="light"]) .ta,
+:root:not([data-theme="light"]) .ta ~ * {
+  --surface-panel: #131c2f;
+  --surface-raised: #182238;
+  --border-subtle: #1e2942;
+}
+

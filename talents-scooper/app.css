@@ -16,10 +16,25 @@
 }
 
 .month-picker { position: relative; }
-.month-picker .menu { right: 0; top: 48px; width: 300px; }
-.month-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-.month-grid button { height: 36px; justify-content: center; }
-.month-grid button.is-active { background: var(--brand-tint); color: var(--text-link); }
+.month-picker #month-label { white-space: nowrap; }
+/* date-pick (Figma 97:747): month control + year control side by side */
+.date-pick {
+  position: absolute;
+  z-index: 40;
+  top: 52px;
+  right: 0;
+  display: flex;
+  gap: var(--space-16);
+  padding: var(--space-16);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--surface-panel);
+  box-shadow: var(--shadow-popup);
+}
+.date-pick__field { display: flex; flex-direction: column; gap: var(--space-8); }
+.date-pick__field:first-child .select { width: 163px; }
+.date-pick__field:last-child .select { width: 154px; }
+.date-pick .select select { flex: 1; min-width: 0; }
 
 .toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-16); margin-bottom: var(--space-24); }
 
@@ -55,7 +70,7 @@
   font-weight: 500;
 }
 .slot:hover { border-color: var(--border-focus); }
-.slot.is-active { background: var(--brand-primary); border-color: var(--brand-primary); color: #fff; }
+.slot.is-active { background: var(--brand-primary); border-color: var(--brand-primary); color: var(--text-on-brand); }
 
 /* Round history */
 .timeline { display: flex; flex-direction: column; gap: 0; padding: 0; margin: 0; list-style: none; }

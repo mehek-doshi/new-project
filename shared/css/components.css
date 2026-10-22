@@ -33,7 +33,7 @@
 .btn--block { width: 100%; }
 
 .btn--primary { background: var(--brand-primary); color: var(--text-on-brand); }
-.btn--primary:hover { background: var(--brand-primary-hover); }
+.btn--primary:hover { filter: brightness(0.92); }
 
 .btn--secondary { border-color: var(--border-outline); color: var(--text-strong); }
 .btn--secondary:hover { background: var(--surface-raised); }
@@ -44,7 +44,7 @@
 .btn--destructive { border-color: var(--status-error); color: var(--status-error-text); }
 .btn--destructive:hover { background: var(--status-error-tint); }
 
-.btn--danger { background: var(--status-error); color: #fff; }
+.btn--danger { background: var(--status-error); color: var(--text-on-brand); }
 .btn--danger:hover { filter: brightness(0.92); }
 
 .btn--ghost { color: var(--text-link); }
@@ -150,7 +150,7 @@ textarea.input {
 .input--lg {
   height: 56px;
   border-radius: var(--radius-lg);
-  background: var(--surface-inset);
+  background: var(--surface-canvas);
   border-color: var(--border-subtle);
   font-size: 16px;
 }
@@ -232,7 +232,7 @@ textarea.input {
 .switch input { appearance: none; margin: 0; width: 100%; height: 100%; border-radius: var(--radius-full); background: var(--surface-raised); border: 1px solid var(--border-strong); cursor: pointer; transition: background 0.15s; }
 .switch input::after { content: ""; position: absolute; top: 4px; left: 4px; width: 16px; height: 16px; border-radius: 50%; background: var(--text-muted); transition: transform 0.15s, background 0.15s; }
 .switch input:checked { background: var(--brand-primary); border-color: var(--brand-primary); }
-.switch input:checked::after { transform: translateX(16px); background: #fff; }
+.switch input:checked::after { transform: translateX(16px); background: var(--text-on-brand); }
 
 /* ---------- Tabs ----------
    Pill tabs, height 40, radius full, 16px padding. Active = 20% brand tint + blue outline. */
@@ -267,7 +267,7 @@ textarea.input {
   line-height: 20px;
   text-align: center;
 }
-.tab.is-active .count { background: var(--brand-primary); color: #fff; }
+.tab.is-active .count { background: var(--brand-primary); color: var(--text-on-brand); }
 
 /* Segmented control (underline tabs inside cards) */
 .segmented { display: inline-flex; padding: 4px; gap: 4px; border-radius: var(--radius-full); background: var(--surface-raised); }
@@ -310,14 +310,14 @@ textarea.input {
   height: 24px;
   padding: 0 10px;
   border-radius: var(--radius-full);
-  background: rgba(2, 11, 25, 0.65);
-  color: #fff;
+  background: var(--black-60);
+  color: var(--white-100);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.4px;
 }
 .live-chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--status-error); animation: pulse 1.4s infinite; }
-.live-chip--warning { background: rgba(235, 178, 8, 0.9); color: var(--chip-solid-text); }
+.live-chip--warning { background: var(--status-warning); color: var(--chip-solid-text); }
 .live-chip--warning::before { display: none; }
 .live-chip svg { width: 13px; height: 13px; }
 
@@ -359,7 +359,7 @@ textarea.input {
   white-space: nowrap;
 }
 .nav-item svg { width: 20px; height: 20px; flex: none; }
-.nav-item:hover { color: var(--text-strong); background: color-mix(in srgb, var(--surface-panel) 50%, transparent); text-decoration: none; }
+.nav-item:hover { color: var(--text-strong); background: var(--surface-panel); text-decoration: none; }
 .nav-item.is-active { background: var(--surface-panel); color: var(--text-strong); }
 .nav-item .count { margin-left: auto; font-size: 12px; color: var(--text-muted); }
 
@@ -582,8 +582,8 @@ textarea.input {
   background: var(--surface-panel);
   box-shadow: var(--shadow-popup);
 }
-.menu button,
-.menu a {
+.menu > button,
+.menu > a {
   display: flex;
   align-items: center;
   gap: var(--space-12);
@@ -597,9 +597,10 @@ textarea.input {
   text-align: left;
   text-decoration: none;
 }
-.menu button:hover,
-.menu a:hover { background: var(--surface-raised); }
-.menu svg { width: 18px; height: 18px; color: var(--text-muted); }
+.menu > button:hover,
+.menu > a:hover { background: var(--surface-raised); }
+.menu > button svg,
+.menu > a svg { width: 18px; height: 18px; color: var(--text-muted); }
 
 /* Toast */
 .toast-stack { position: fixed; z-index: 80; right: 24px; bottom: 24px; display: flex; flex-direction: column; gap: var(--space-8); }

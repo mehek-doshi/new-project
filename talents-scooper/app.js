@@ -48,32 +48,40 @@
       '<h1 class="t-page-title">' + esc(title) + "</h1>" +
       '<button class="icon-btn icon-btn--plain" id="refresh" aria-label="Refresh"><i data-lucide="refresh-cw"></i></button>' +
       '<label class="search grow"><i data-lucide="search"></i><span class="sr-only">Search</span><input class="input" id="search" type="search" placeholder="Search"></label>' +
-      '<div class="month-picker"><button class="select" id="month-btn" aria-haspopup="true"><i data-lucide="calendar"></i><span id="month-label">' + MONTHS_LONG[now.getMonth()] + " " + now.getFullYear() + '</span><i data-lucide="chevron-down"></i></button>' +
-      '<div class="menu" id="month-menu" hidden><div class="row" style="margin-bottom:8px"><button class="icon-btn icon-btn--plain" data-year="-1" aria-label="Previous year"><i data-lucide="chevron-left"></i></button><strong class="grow" style="text-align:center" id="year-label">' + now.getFullYear() + '</strong><button class="icon-btn icon-btn--plain" data-year="1" aria-label="Next year"><i data-lucide="chevron-right"></i></button></div>' +
-      '<div class="month-grid">' + MONTHS.map(function (m, i) { return '<button data-month="' + i + '"' + (i === now.getMonth() ? ' class="is-active"' : "") + ">" + m + "</button>"; }).join("") + "</div></div></div>" +
+      '<div class="month-picker"><button class="select" id="month-btn" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="calendar"></i><span id="month-label"></span><i data-lucide="chevron-down"></i></button>' +
+      '<div class="date-pick" id="month-menu" role="dialog" aria-label="Choose month and year" hidden>' +
+      '<label class="date-pick__field"><span class="t-overline">Month</span><span class="select"><select id="pick-month">' + MONTHS_LONG.map(function (m, i) { return '<option value="' + i + '">' + m + "</option>"; }).join("") + '</select><i data-lucide="chevron-down"></i></span></label>' +
+      '<label class="date-pick__field"><span class="t-overline">Year</span><span class="select"><select id="pick-year">' + [2024, 2025, 2026, 2027].map(function (y) { return '<option value="' + y + '">' + y + "</option>"; }).join("") + '</select><i data-lucide="chevron-down"></i></span></label>' +
+      "</div></div>" +
       '<span class="env-badge" title="Environment">PROD</span>' +
       '<button class="icon-btn" data-theme-toggle aria-label="Toggle theme"></button>' +
       '<button class="icon-btn" aria-label="Notifications (2)" id="notif-btn"><i data-lucide="bell"></i><span class="dot"></span></button>' +
       avatar("Mehek Doshi", 40);
 
-    var year = now.getFullYear();
-    var month = now.getMonth();
     var menu = $("#month-menu");
-    $("#month-btn").addEventListener("click", function (e) { e.stopPropagation(); menu.hidden = !menu.hidden; });
-    menu.addEventListener("click", function (e) {
-      e.stopPropagation();
-      var y = e.target.closest("[data-year]");
-      var m = e.target.closest("[data-month]");
-      if (y) { year += +y.getAttribute("data-year"); $("#year-label").textContent = year; }
-      if (m) {
-        month = +m.getAttribute("data-month");
-        $all("[data-month]", menu).forEach(function (b) { b.classList.toggle("is-active", b === m); });
-        $("#month-label").textContent = MONTHS_LONG[month] + " " + year;
-        menu.hidden = true;
-        NL.toast("Showing candidates for " + MONTHS_LONG[month] + " " + year, "calendar");
-      }
+    var btn = $("#month-btn");
+    var pickMonth = $("#pick-month");
+    var pickYear = $("#pick-year");
+    pickMonth.value = String(now.getMonth());
+    pickYear.value = String(now.getFullYear());
+    function showMonth() {
+      $("#month-label").textContent = MONTHS_LONG[+pickMonth.value] + " " + pickYear.value;
+    }
+    function setOpen(open) {
+      menu.hidden = !open;
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+    showMonth();
+    btn.addEventListener("click", function (e) { e.stopPropagation(); setOpen(menu.hidden); });
+    menu.addEventListener("click", function (e) { e.stopPropagation(); });
+    [pickMonth, pickYear].forEach(function (sel) {
+      sel.addEventListener("change", function () {
+        showMonth();
+        NL.toast("Showing candidates for " + $("#month-label").textContent, "calendar");
+      });
     });
-    document.addEventListener("click", function () { menu.hidden = true; closeMenus(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") setOpen(false); });
+    document.addEventListener("click", function () { setOpen(false); closeMenus(); });
 
     $("#refresh").addEventListener("click", function () {
       var icon = this.querySelector("svg");
