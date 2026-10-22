@@ -625,6 +625,42 @@ textarea.input {
 .logo:hover { text-decoration: none; }
 .logo img { width: 40px; height: 40px; }
 .logo__word { font-size: 20px; line-height: 28px; font-weight: 500; letter-spacing: 0.2px; }
+/* Brand tile: the cube mark on a white rounded square (app headers / sidebars). */
+.brand-tile {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 10px;
+  background: var(--white-100);
+}
+.logo .brand-tile img { width: 32px; height: 32px; }
+.brand-tile--muted { background: var(--white-100); }
+.wordmark { font-size: 24px; line-height: 32px; font-weight: 700; color: var(--text-strong); letter-spacing: -0.2px; }
+.wordmark span { color: var(--violet-100); }
+.logo__stack { display: flex; flex-direction: column; }
+.logo__sub { font-size: 10px; line-height: 14px; letter-spacing: 0.4px; text-transform: uppercase; color: var(--text-muted); font-weight: 500; }
+
+/* Underline tabs (Talents Scooper status tabs) */
+.utabs { display: flex; flex-wrap: wrap; gap: var(--space-32); }
+.utab {
+  position: relative;
+  padding: var(--space-8) 0 var(--space-12);
+  border: 0;
+  background: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.utab:hover { color: var(--text-strong); }
+.utab.is-active { color: var(--text-strong); font-weight: 700; }
+.utab.is-active::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; border-radius: 2px; background: var(--brand-primary); }
+
+/* Gradient initials avatar used in Talents Scooper tables + top bar */
+.avatar--brand { background: linear-gradient(135deg, var(--blue-100), var(--violet-100)); color: var(--white-100); }
 
 /* Empty state */
 .empty { display: flex; flex-direction: column; align-items: center; gap: var(--space-12); padding: var(--space-48) var(--space-24); text-align: center; color: var(--text-muted); }

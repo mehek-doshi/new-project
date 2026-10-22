@@ -29,7 +29,7 @@ shared/
   img/neuleap-mark.svg logo mark
   vendor/lucide/       icon library (ISC licence)
 testing-app/           login, permissions, verify, intro, test, submitted, disqualified
-talents-scooper/       dashboard, interview schedule, question banks, candidate
+talents-scooper/       dashboard, question banks, interview schedule, token usage, candidate
 tech-radar/            sign in, dashboard, new use case, artifacts, admin-*.html
 ```
 
@@ -40,4 +40,5 @@ Each app's own `app.css` only handles layout. Colours, type, spacing and compone
 - Data is sample data in each app's `data.js` / `questions.js`; there is no backend.
 - Every screen supports dark and light themes (toggle in the header, remembered per browser).
 - The Testing App uses your real camera if you allow it, otherwise a placeholder. Switching tabs during the test raises a proctoring warning; three warnings disqualify. Add `?demo=motion` to `test.html` to see the motion warning immediately.
-- The Neuleap logo is a placeholder mark — swap `shared/img/neuleap-mark.svg` for the real asset.
+- Dark-theme colours follow the current app screens (canvas `#0b1423`, panels `#162945`, tiles `#264478`).
+- The Neuleap cube logo is an approximation — swap `shared/img/neuleap-mark.svg` for the official asset.

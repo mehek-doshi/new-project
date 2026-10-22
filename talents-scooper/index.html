@@ -18,18 +18,17 @@
   <script defer src="data.js"></script>
   <script defer src="app.js"></script>
 </head>
-<body>
+<body class="ts">
   <div class="app" data-nav="dashboard" data-title="Dashboard">
     <aside class="sidebar" data-sidebar></aside>
     <div class="main">
       <header class="topbar ts-topbar" data-topbar></header>
-      <main class="content">
-        <div class="toolbar">
-          <div class="tabs" id="status-tabs" role="tablist" aria-label="Candidate status"></div>
-          <span class="spacer"></span>
-          <button class="btn btn--primary" id="run-pipeline"><i data-lucide="play"></i>Run Pipeline</button>
+      <main class="ts-panel">
+        <div class="ts-panel__head">
+          <div class="utabs" id="status-tabs" role="tablist" aria-label="Candidate status"></div>
+          <button class="btn btn--primary btn--xs" id="run-pipeline"><i data-lucide="play"></i>Run Pipeline</button>
         </div>
-        <div id="status-panel"></div>
+        <div class="ts-scroll" id="status-panel"></div>
       </main>
     </div>
   </div>

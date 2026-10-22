@@ -18,28 +18,15 @@
   <script defer src="data.js"></script>
   <script defer src="app.js"></script>
 </head>
-<body>
+<body class="ts">
   <div class="app" data-nav="schedule" data-title="Interview Schedule">
     <aside class="sidebar" data-sidebar></aside>
     <div class="main">
       <header class="topbar ts-topbar" data-topbar></header>
-      <main class="content">
-        <div class="toolbar">
-          <div class="col gap-4 grow">
-            <h2 class="t-title">Upcoming interviews</h2>
-            <p class="t-body text-muted">Suggested interviewers are picked from availability and this week’s load. Assign or reassign to confirm a slot.</p>
-          </div>
-          <div class="row wrap t-small text-muted">
-            <span class="chip chip--dot chip--success">Open</span>
-            <span class="chip chip--dot chip--info">Confirmed</span>
-            <span class="chip chip--dot chip--warning">Tentative</span>
-            <span class="chip chip--dot chip--error">Busy</span>
-            <span class="chip chip--dot">Pending</span>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table class="table" data-sortable data-searchable>
-            <thead><tr><th>Name</th><th class="sortable">Aging<i data-lucide="arrow-up-down"></i></th><th class="sortable">Role<i data-lucide="arrow-up-down"></i></th><th>Stage</th><th>Suggested interviewer</th><th>Slot status</th><th>Action</th></tr></thead>
+      <main class="ts-panel">
+        <div class="ts-scroll">
+          <table class="ts-table" data-sortable data-searchable>
+            <thead><tr><th>Name</th><th class="num sortable">Aging<i class="sort" data-lucide="arrow-down-up"></i></th><th class="sortable">Role<i class="sort" data-lucide="arrow-down-up"></i></th><th>Stage</th><th>Suggested Interviewer</th><th>Slot Status</th><th>Action</th></tr></thead>
             <tbody id="schedule-body"></tbody>
           </table>
         </div>
@@ -48,10 +35,7 @@
   </div>
   <div class="modal" id="assign-modal" role="dialog" aria-labelledby="assign-title" aria-hidden="true">
     <div class="modal__header">
-      <div class="grow">
-        <h2 class="t-title" id="assign-title">Assign Interviewer</h2>
-        <p class="t-body text-muted" id="assign-sub"></p>
-      </div>
+      <div class="grow"><h2 class="t-title" id="assign-title">Assign Interviewer</h2><p class="t-body text-muted" id="assign-sub"></p></div>
       <button class="icon-btn icon-btn--round" data-close aria-label="Close"><i data-lucide="x"></i></button>
     </div>
     <div class="modal__body" id="interviewer-list"></div>

@@ -110,9 +110,10 @@
     {
       key: "screen",
       title: "Allow screen recording",
-      body: "We record your screen for the length of the test so the hiring team can review your session. Choose “Entire screen” when your browser asks.",
+      body: "We record your screen during the test so the AI proctor can confirm no other apps, tabs or windows are used.",
+      checks: ["Choose “Entire screen” in the browser prompt", "Keep sharing on until the test ends"],
       icon: "monitor",
-      verifying: "Checking screen share…",
+      cta: "Share my screen",
       request: function () {
         if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) return Promise.reject();
         return navigator.mediaDevices.getDisplayMedia({ video: true }).then(function (s) {
@@ -123,19 +124,21 @@
     {
       key: "camera",
       title: "Allow camera access",
-      body: "Your camera stays on during the test. Make sure your face is well lit and fully inside the frame.",
+      body: "Your camera stays on for the whole test so the AI proctor can confirm it’s you answering the questions.",
+      checks: ["Sit in a well-lit room, facing the screen", "Keep your face inside the frame"],
       icon: "video",
-      verifying: "Looking for your camera…",
-      request: function (visual) {
-        return attachCamera(visual).then(function (ok) { if (!ok) throw new Error("camera"); });
+      cta: "Turn on camera",
+      request: function (tile) {
+        return attachCamera(tile).then(function (ok) { if (!ok) throw new Error("camera"); });
       }
     },
     {
       key: "mic",
       title: "Allow microphone access",
-      body: "We listen for background voices. Sit somewhere quiet and keep your microphone unmuted.",
+      body: "We listen for other voices in the room. Your audio is only used to flag possible outside help.",
+      checks: ["Sit somewhere quiet", "Keep your microphone unmuted"],
       icon: "mic",
-      verifying: "Testing your microphone…",
+      cta: "Turn on microphone",
       request: function () {
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return Promise.reject();
         return navigator.mediaDevices.getUserMedia({ audio: true }).then(function (s) {
@@ -148,42 +151,48 @@
   function initPermissions() {
     var current = 0;
     var flow = $("#perm-flow");
+    var NODES = ["monitor", "video", "mic", "circle-check"];
 
     function stepper() {
-      var labels = ["Screen", "Camera", "Microphone"];
-      return '<div class="stepper" aria-label="Progress">' + labels.map(function (label, i) {
+      return '<ol class="vstepper" aria-label="System check progress">' + NODES.map(function (icon, i) {
         var cls = i < current ? "is-done" : i === current ? "is-active" : "";
-        var dot = i < current ? '<i data-lucide="check"></i>' : i + 1;
-        return (i ? '<span class="stepper__line"></span>' : "") +
-          '<div class="stepper__item ' + cls + '"><span class="stepper__dot">' + dot + "</span>" + label + "</div>";
-      }).join("") + "</div>";
+        var label = i < 3 ? PERM_STEPS[i].title : "All set";
+        return '<li class="' + cls + '"' + (i === current ? ' aria-current="step"' : "") + ' title="' + label + '"><i data-lucide="' + (i < current ? "check" : icon) + '"></i><span class="sr-only">' + label + "</span></li>";
+      }).join("") + "</ol>";
+    }
+
+    function checks(items, icon) {
+      return '<ul class="syscheck__checks">' + items.map(function (c) { return '<li><i data-lucide="' + (icon || "check") + '"></i>' + c + "</li>"; }).join("") + "</ul>";
     }
 
     function render(phase, error) {
+      var hint = '<p class="syscheck__hint"><i data-lucide="info"></i>Your browser will show a prompt for each permission — choose Allow.</p>';
       if (current >= PERM_STEPS.length) {
-        flow.innerHTML = stepper() +
-          '<div class="perm-visual is-done"><div class="perm-visual__icon"><i data-lucide="shield-check"></i></div></div>' +
-          '<div class="col gap-12"><h2 class="t-page-title">You’re all set</h2>' +
-          '<p class="t-body-lg text-muted">Screen recording, camera and microphone are ready. Next, we’ll verify your identity.</p></div>' +
-          '<ul class="checklist"><li><i data-lucide="check-circle-2"></i>Screen recording enabled</li><li><i data-lucide="check-circle-2"></i>Camera connected</li><li><i data-lucide="check-circle-2"></i>Microphone connected</li></ul>' +
-          '<a class="btn btn--primary btn--xl" href="verify.html" style="margin-top:auto">Continue to identity check <i data-lucide="arrow-right"></i></a>';
+        flow.innerHTML = stepper() + '<div class="syscheck">' +
+          '<p class="syscheck__step">System check complete</p>' +
+          '<div class="syscheck__tile is-done"><i data-lucide="shield-check"></i></div>' +
+          '<h2 class="syscheck__title">You’re all set</h2>' +
+          '<p class="syscheck__desc">Screen recording, camera and microphone are ready. Next, we’ll verify your identity.</p>' +
+          checks(["Screen recording enabled", "Camera connected", "Microphone connected"]) +
+          '<div class="syscheck__actions"><a class="btn btn--primary" href="verify.html">Continue to identity check<i data-lucide="arrow-right"></i></a></div></div>';
         NL.icons();
         return;
       }
       var step = PERM_STEPS[current];
-      var verifying = phase === "verifying";
-      flow.innerHTML = stepper() +
-        '<div class="perm-visual ' + (verifying ? "is-verifying" : "") + '" id="perm-visual"><div class="perm-visual__icon"><i data-lucide="' + step.icon + '"></i></div></div>' +
-        '<div class="col gap-12"><p class="t-overline">Step ' + (current + 1) + " of 3</p>" +
-        '<h2 class="t-page-title">' + step.title + "</h2>" +
-        '<p class="t-body-lg text-muted">' + step.body + "</p></div>" +
-        (error ? '<div class="callout callout--error"><i data-lucide="alert-triangle"></i><div>Your browser blocked this request. Allow access in the address bar and try again, or continue in demo mode.</div></div>' : "") +
-        '<div class="row gap-16 wrap" style="margin-top:auto">' +
-        (verifying
-          ? '<button class="btn btn--primary btn--xl" disabled><span class="meter" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>' + step.verifying + "</button>"
-          : '<button class="btn btn--primary btn--xl" data-action="allow">Allow access</button>' +
-            (error ? '<button class="btn btn--secondary btn--xl" data-action="skip">Continue in demo mode</button>' : "")) +
-        "</div>";
+      var waiting = phase === "verifying";
+      flow.innerHTML = stepper() + '<div class="syscheck">' +
+        '<p class="syscheck__step">Step ' + (current + 1) + " of 3 · System check</p>" +
+        '<div class="syscheck__tile" id="perm-tile"><i data-lucide="' + step.icon + '"></i></div>' +
+        '<h2 class="syscheck__title">' + step.title + "</h2>" +
+        '<p class="syscheck__desc">' + step.body + "</p>" +
+        checks(step.checks) +
+        (error ? '<div class="callout callout--error"><i data-lucide="triangle-alert"></i><div>Your browser blocked this request. Allow access from the address bar and try again, or continue in demo mode.</div></div>' : "") +
+        '<div class="syscheck__actions">' +
+        (waiting
+          ? '<button class="btn btn--primary" disabled><i data-lucide="loader-circle" class="spin"></i>Waiting for permission…</button>'
+          : '<button class="btn btn--primary" data-action="allow"><i data-lucide="' + step.icon + '"></i>' + (error ? "Try again" : step.cta) + "</button>" +
+            (error ? '<button class="btn btn--secondary" data-action="skip">Continue in demo mode</button>' : "")) +
+        "</div>" + hint + "</div>";
       NL.icons();
     }
 
@@ -199,12 +208,12 @@
       render("verifying");
       var started = Date.now();
       Promise.resolve()
-        .then(function () { return step.request($("#perm-visual")); })
+        .then(function () { return step.request($("#perm-tile")); })
         .then(function () {
           setTimeout(function () {
             current += 1;
             render();
-          }, Math.max(0, 1200 - (Date.now() - started)));
+          }, Math.max(0, 900 - (Date.now() - started)));
         })
         .catch(function () { render(null, true); });
     });
@@ -507,12 +516,11 @@
       $("#sum-open").textContent = (total - done) + "/" + total;
       $("#donut-label").textContent = done + "/" + total;
       $("#donut-arc").setAttribute("stroke-dasharray", pct + " " + (100 - pct));
-      $("#donut-arc").setAttribute("stroke-linecap", done ? "round" : "butt");
       var active = activeSection();
       $("#sum-sections").innerHTML = sections.map(function (sec, s) {
         var n = sec.questions.filter(function (_, i) { return state.submitted[s * 10 + i + 1]; }).length;
         var status = s < active || sectionDone(s) ? "Completed" : s === active ? "Active · " + sec.minutes + " min" : s === active + 1 ? "Locked · unlocks next" : "Locked";
-        return "<tr><td>" + (s + 1) + '.</td><td><div class="text-strong t-body-medium">' + sec.name + '</div><div class="t-small text-muted">' + status + "</div></td>" +
+        return "<tr><td>" + (s + 1) + '.</td><td><div class="t-body-lg ' + (s === active && !sectionDone(s) ? "is-active-section" : "text-strong") + '" style="font-weight:500">' + sec.name + '</div><div class="t-small text-muted">' + status + "</div></td>" +
           '<td style="width:300px"><div class="progress"><span style="width:' + n * 10 + '%"></span></div><div class="t-small text-muted" style="margin-top:6px">' + n + " of 10 answered</div></td></tr>";
       }).join("");
       NL.open("finish-drawer");
@@ -549,7 +557,7 @@
     $("#motion-ok").addEventListener("click", function () {
       popup.classList.remove("is-open");
       $("#proctor").classList.remove("is-flagged");
-      $("#proctor-text").textContent = "Proctoring active";
+      $("#proctor-text").textContent = "AI proctoring active";
       $("#webcam-flag").hidden = true;
     });
 

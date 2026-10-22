@@ -20,7 +20,7 @@
 <body data-page="test">
   <div class="ta" data-test style="height:100vh">
     <header class="ta-header">
-      <a class="logo" href="#" aria-label="Neuleap"><img src="../shared/img/neuleap-mark.svg" alt=""><span class="logo__word">Neuleap</span></a>
+      <a class="logo" href="#" aria-label="neuleap.ai"><span class="brand-tile"><img src="../shared/img/neuleap-mark.svg" alt=""></span><span class="wordmark">neuleap<span>.ai</span></span></a>
       <span class="spacer"></span>
       <span class="t-body text-muted" style="margin-right:8px"><span data-full-name>Aarav Mehta</span> · <span data-candidate-id>NL-APT-26-0148</span></span>
       <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"></button>
@@ -35,13 +35,13 @@
         </div>
         <div class="proctor" id="proctor">
           <span class="proctor__dot"></span>
-          <span class="t-body grow" id="proctor-text">Proctoring active</span>
+          <span class="t-body grow" id="proctor-text">AI proctoring active</span>
           <i data-lucide="video"></i><i data-lucide="mic"></i>
         </div>
         <hr class="divider">
         <div class="col gap-24" id="palette"></div>
         <hr class="divider">
-        <div class="legend t-small" style="gap:12px 24px">
+        <div class="legend legend--grid t-small">
           <span class="legend__item"><span class="swatch swatch--current"></span>Current</span>
           <span class="legend__item"><span class="swatch swatch--answered"></span>Answered</span>
           <span class="legend__item"><span class="swatch"></span>Not answered</span>
@@ -91,19 +91,19 @@
     </div>
   </div>
 
-  <aside class="drawer" id="finish-drawer" aria-labelledby="finish-title" aria-hidden="true">
+  <aside class="drawer finish-drawer" id="finish-drawer" aria-labelledby="finish-title" aria-hidden="true">
     <div class="drawer__header">
-      <i data-lucide="alert-triangle" style="width:24px;height:24px;color:var(--status-warning-text)"></i>
+      <i data-lucide="triangle-alert" style="width:26px;height:26px;color:var(--status-error-text)"></i>
       <h2 class="t-title grow" id="finish-title" style="font-weight:500">Finish test?</h2>
-      <span class="row t-body text-muted"><i data-lucide="clock" style="width:18px;height:18px"></i>Remaining time: <strong class="text-strong" id="drawer-time">44:37</strong></span>
+      <span class="row t-body-lg text-strong"><i data-lucide="timer" style="width:18px;height:18px;color:var(--text-muted)"></i>Remaining time: <strong id="drawer-time">44:37</strong></span>
       <button class="icon-btn icon-btn--round" data-close aria-label="Close"><i data-lucide="x"></i></button>
     </div>
     <div class="drawer__body">
       <div class="row gap-24 wrap" style="padding:40px 40px 32px;align-items:center">
         <div class="donut">
           <svg viewBox="0 0 42 42" aria-hidden="true">
-            <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--border-strong)" stroke-width="4"></circle>
-            <circle id="donut-arc" cx="21" cy="21" r="15.9155" fill="none" stroke="var(--brand-primary)" stroke-width="4" stroke-linecap="round" stroke-dasharray="0 100"></circle>
+            <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--neutral)" stroke-width="6"></circle>
+            <circle id="donut-arc" cx="21" cy="21" r="15.9155" fill="none" stroke="var(--brand-primary)" stroke-width="6" stroke-dasharray="0 100"></circle>
           </svg>
           <div class="donut__label"><span class="t-page-title" id="donut-label">0/30</span><span class="t-small text-muted">answered</span></div>
         </div>
@@ -111,25 +111,25 @@
           <p class="t-overline">Your test summary</p>
           <div class="row" style="align-items:baseline;gap:12px"><span class="t-page-title">30</span><span class="t-body text-muted">Total questions</span></div>
           <div class="summary-list">
-            <div class="row"><i style="background:var(--status-success)"></i>Answered: <strong class="text-strong" id="sum-answered">0/30</strong></div>
+            <div class="row"><i style="background:var(--brand-primary)"></i>Answered: <strong class="text-strong" id="sum-answered">0/30</strong></div>
             <div class="row"><i style="background:var(--status-warning)"></i>Marked for review: <strong class="text-strong" id="sum-review">0/30</strong></div>
-            <div class="row"><i style="background:var(--border-strong)"></i>Not answered: <strong class="text-strong" id="sum-open">30/30</strong></div>
+            <div class="row"><i style="background:var(--neutral)"></i>Not answered: <strong class="text-strong" id="sum-open">30/30</strong></div>
           </div>
         </div>
       </div>
-      <div class="col gap-16" style="padding:32px 40px;background:var(--surface-raised);border-top:1px solid var(--border-subtle);min-height:100%">
-        <h3 class="t-subhead" style="font-weight:500">Section summary</h3>
+      <div class="finish-sections">
+        <h3 class="t-title" style="font-weight:500">Section summary</h3>
         <div class="table-wrap">
           <table class="table table--compact">
             <thead><tr><th style="width:40px">#</th><th>Section</th><th>Status</th></tr></thead>
             <tbody id="sum-sections"></tbody>
           </table>
         </div>
-        <div class="callout callout--warning"><i data-lucide="info"></i><p>Once you finish, you can’t return to the test. Unanswered questions will be marked as not attempted.</p></div>
+        <div class="callout callout--warning" style="margin-top:8px"><i data-lucide="info"></i><p>Once you finish, you can’t return to the test. Unanswered questions will be marked as not attempted.</p></div>
       </div>
     </div>
     <div class="drawer__footer">
-      <button class="btn btn--danger btn--xl" id="finish-test">Finish test</button>
+      <button class="btn btn--primary btn--xl" id="finish-test">Finish test</button>
       <button class="btn btn--secondary btn--xl" data-close>No, back to test</button>
     </div>
   </aside>

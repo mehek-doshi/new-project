@@ -18,53 +18,47 @@
   <script defer src="data.js"></script>
   <script defer src="app.js"></script>
 </head>
-<body>
+<body class="ts">
   <div class="app" data-nav="banks" data-title="Question Banks">
     <aside class="sidebar" data-sidebar></aside>
     <div class="main">
       <header class="topbar ts-topbar" data-topbar></header>
-      <main class="content">
-        <div class="toolbar">
-          <div class="tabs" id="role-tabs" role="tablist" aria-label="Role"></div>
-          <span class="spacer"></span>
-          <button class="btn btn--primary" data-open="upload-modal"><i data-lucide="upload"></i>Upload Question Bank</button>
+      <main class="ts-panel">
+        <div class="ts-panel__head" style="justify-content:flex-end;margin-bottom:56px">
+          <button class="btn btn--primary btn--xs" data-open="upload-modal">Upload Question Bank<i data-lucide="upload"></i></button>
         </div>
-        <div class="qb-layout">
-          <section class="card card--flush">
-            <div class="card__header" style="padding:24px 24px 16px">
-              <div class="grow"><p class="t-overline">Queued interviews</p><h2 class="t-title">Assign a bank to each interview</h2></div>
-            </div>
-            <div class="table-wrap" style="border-radius:0;border-left:0;border-right:0;border-bottom:0">
-              <table class="table" data-searchable>
-                <thead><tr><th>Name</th><th>Role</th><th>Stage</th><th>Interviewer</th><th>Action</th></tr></thead>
-                <tbody id="queue-body"></tbody>
-              </table>
-            </div>
-          </section>
-
-          <section class="card gap-16">
-            <div class="card__header">
-              <div class="grow"><p class="t-overline">Question bank</p><h2 class="t-title"><span id="selected-count">8</span> questions selected</h2></div>
-              <label class="select select--square"><i data-lucide="folder-open"></i><span class="sr-only">Assign existing bank</span><select id="bank-select"></select><i data-lucide="chevron-down"></i></label>
-            </div>
-            <div class="setting">
-              <div class="col gap-4 grow">
-                <strong class="t-body-medium text-strong">Randomly send questions with answers to interviewer</strong>
-                <span class="t-small text-muted">A random set is sent automatically at the time of each interview</span>
-              </div>
-              <label class="switch"><input type="checkbox" id="random-send" checked aria-label="Randomly send questions"></label>
-            </div>
-            <div class="tag-row" id="tag-filter" aria-label="Filter by tag"></div>
-            <div id="question-list"></div>
-            <form class="row gap-12 wrap" id="new-question-form">
-              <input class="input grow" id="new-question" placeholder="Type new question" aria-label="New question" style="min-width:240px">
-              <label class="select select--square"><span class="sr-only">Tag</span><select id="new-question-tag"></select><i data-lucide="chevron-down"></i></label>
-              <button class="btn btn--outline" type="submit"><i data-lucide="plus"></i>Add</button>
-            </form>
-          </section>
+        <div class="ts-scroll" style="padding:0 var(--space-32)">
+          <table class="ts-table" data-searchable>
+            <thead><tr><th>Name</th><th class="num">Role<span class="filter-wrap"><button class="filter-btn" id="role-filter" aria-label="Filter by role"><i data-lucide="filter"></i></button>
+              <div class="menu" id="role-menu" data-menu hidden><button data-filter="All">All roles</button><button data-filter="Data Engineer">Data Engineer</button><button data-filter="Gen AI">Gen AI</button><button data-filter="UX Designer">UX Designer</button></div></span></th>
+              <th class="num">Stage</th><th>Interviewer</th><th class="center">Action</th></tr></thead>
+            <tbody id="queue-body"></tbody>
+          </table>
         </div>
       </main>
     </div>
+  </div>
+  <div class="modal wide-modal" id="bank-modal" role="dialog" aria-labelledby="bank-title" aria-hidden="true">
+    <div class="modal__header">
+      <div class="grow"><h2 class="t-title" id="bank-title">Assign question bank</h2><p class="t-body text-muted" id="bank-sub"></p></div>
+      <button class="icon-btn icon-btn--round" data-close aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+    <div class="modal__body">
+      <div class="row wrap gap-12"><strong class="text-strong grow" id="selected-count">8 questions selected</strong>
+        <label class="select select--square"><span class="sr-only">Assign existing bank</span><select id="bank-select"></select><i data-lucide="chevron-down"></i></label></div>
+      <div class="setting">
+        <div class="col gap-4 grow"><strong class="t-body-medium text-strong">Randomly send questions with answers to interviewer</strong><span class="t-small text-muted">A random set is sent automatically at the time of each interview</span></div>
+        <label class="switch"><input type="checkbox" checked aria-label="Randomly send questions"></label>
+      </div>
+      <div class="tag-row" id="tag-filter" aria-label="Filter by tag"></div>
+      <div id="question-list"></div>
+      <form class="row gap-12 wrap" id="new-question-form">
+        <input class="input grow" id="new-question" placeholder="Type new question" aria-label="New question" style="min-width:220px">
+        <label class="select select--square"><span class="sr-only">Tag</span><select id="new-question-tag"></select><i data-lucide="chevron-down"></i></label>
+        <button class="btn btn--outline" type="submit"><i data-lucide="plus"></i>Add</button>
+      </form>
+    </div>
+    <div class="row gap-12" style="justify-content:flex-end"><button class="btn btn--secondary" data-close>Cancel</button><button class="btn btn--primary" id="confirm-bank">Assign Bank</button></div>
   </div>
   <div class="modal" id="upload-modal" role="dialog" aria-labelledby="upload-title" aria-hidden="true" style="width:min(460px,calc(100vw - 32px))">
     <div class="modal__header">

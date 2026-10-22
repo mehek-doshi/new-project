@@ -17,6 +17,8 @@
   --red-100: #de4444;
   --red-15: rgba(222, 68, 68, 0.15);
   --amber-100: #c79f27;
+  --amber-60: rgba(199, 159, 39, 0.6);
+  --amber-30: rgba(199, 159, 39, 0.3);
   --amber-15: rgba(199, 159, 39, 0.15);
   --violet-100: #935fef;
   --violet-15: rgba(147, 95, 239, 0.15);
@@ -57,14 +59,16 @@
   --topbar-height: 64px;
   --header-height: 86px;
 
-  /* Semantic colours — Dark (default) */
-  --surface-canvas: #020b19;
-  --surface-panel: #1e2942;
-  --surface-raised: #25314a;
-  --surface-scrim: var(--black-60);
+  /* Semantic colours — Dark (default). Matched to the current app screens. */
+  --surface-canvas: #0b1423;
+  --surface-panel: #162945;
+  --surface-raised: #1f3051;
+  --surface-tile: #264478;
+  --surface-scrim: rgba(0, 0, 0, 0.76);
 
-  --border-subtle: #25314a;
-  --border-strong: #3a4a6b;
+  --border-subtle: #22365a;
+  --border-strong: #2d4871;
+  --neutral: #5b687d;
   --border-outline: #ffffff;
   --border-focus: #74a9ff;
   --focus-ring: rgba(74, 134, 231, 0.25);
@@ -112,7 +116,9 @@
   --surface-canvas: #ffffff;
   --surface-panel: #e2e8f0;
   --surface-raised: #cbd5e1;
+  --surface-tile: #dbe7fb;
   --surface-scrim: var(--black-45);
+  --neutral: #94a3b8;
 
   --border-subtle: #cbd5e1;
   --border-strong: #94a3b8;
@@ -133,15 +139,3 @@
 
   color-scheme: light;
 }
-
-/*
- * Testing App surfaces (Design System · "Testing App · Panel / Input / Answer option").
- * The candidate flow uses its own darker panel set; light theme uses the shared light tokens.
- */
-:root:not([data-theme="light"]) .ta,
-:root:not([data-theme="light"]) .ta ~ * {
-  --surface-panel: #131c2f;
-  --surface-raised: #182238;
-  --border-subtle: #1e2942;
-}
-

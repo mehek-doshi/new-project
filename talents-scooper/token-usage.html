@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Token Usage · Talents Scooper</title>
+  <link rel="icon" href="../shared/img/neuleap-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../shared/css/tokens.css">
+  <link rel="stylesheet" href="../shared/css/base.css">
+  <link rel="stylesheet" href="../shared/css/components.css">
+  <link rel="stylesheet" href="../shared/css/layout.css">
+  <link rel="stylesheet" href="app.css">
+  <script src="../shared/js/ui.js"></script>
+  <script defer src="../shared/vendor/lucide/lucide.min.js"></script>
+  <script defer src="data.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body class="ts">
+  <div class="app" data-nav="usage" data-title="Token Usage">
+    <aside class="sidebar" data-sidebar></aside>
+    <div class="main">
+      <header class="topbar ts-topbar" data-topbar></header>
+      <main class="ts-panel">
+        <div class="usage-kpis" id="usage-kpis"></div>
+        <div class="ts-scroll" style="padding:0 var(--space-16)">
+          <table class="ts-table" data-sortable data-searchable style="width:100%">
+            <thead><tr><th>Feature</th><th>Model</th><th class="num sortable">Requests<i class="sort" data-lucide="arrow-down-up"></i></th><th class="num sortable">Tokens<i class="sort" data-lucide="arrow-down-up"></i></th><th class="num sortable">Cost<i class="sort" data-lucide="arrow-down-up"></i></th></tr></thead>
+            <tbody id="usage-body"></tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-/* Talents Scooper: app shell (sidebar + top bar) and page behaviour. */
+/* Talents Scooper: app shell (sidebar + top bar) and page behaviour, following the current app screens. */
 (function () {
   "use strict";
 
@@ -9,21 +9,25 @@
   function $all(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
 
   var NAV = [
-    { key: "dashboard", label: "Dashboard", icon: "layout-dashboard", href: "index.html" },
-    { key: "schedule", label: "Interview Schedule", icon: "calendar-clock", href: "interview-schedule.html" },
-    { key: "banks", label: "Question Banks", icon: "library-big", href: "question-banks.html" },
-    { key: "candidates", label: "Candidate Nest", icon: "users", href: "candidate.html" }
+    { key: "dashboard", label: "Dashboard", icon: "layout-grid", href: "index.html" },
+    { key: "banks", label: "Question Banks", icon: "bar-chart-3", href: "question-banks.html" },
+    { key: "schedule", label: "Interview Schedule", icon: "mic", href: "interview-schedule.html" },
+    { key: "usage", label: "Token Usage", icon: "circle-dollar-sign", href: "token-usage.html" }
   ];
 
-  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   var MONTHS_LONG = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var USER = { name: "Mehek Doshi", email: "mehek.doshi@neuleap.ai" };
 
-  function avatar(name, size) {
-    return '<span class="avatar' + (size ? " avatar--" + size : "") + '">' + esc(NL.initials(name)) + "</span>";
+  function avatar(name) {
+    return '<span class="avatar avatar--brand">' + esc(NL.initials(name)) + "</span>";
   }
 
   function person(name) {
-    return '<div class="cell-person">' + avatar(name) + "<span>" + esc(name) + "</span></div>";
+    return '<div class="ts-person">' + avatar(name) + "<span>" + esc(name) + "</span></div>";
+  }
+
+  function sortIcon() {
+    return '<i class="sort" data-lucide="arrow-down-up"></i>';
   }
 
   /* ---------- Shell ---------- */
@@ -33,40 +37,51 @@
     var title = app.getAttribute("data-title");
 
     $("[data-sidebar]").innerHTML =
-      '<div class="sidebar__brand"><a class="logo" href="index.html"><img src="../shared/img/neuleap-mark.svg" alt=""><span class="logo__word">Talents Scooper</span></a></div>' +
+      '<div class="sidebar__brand ts-brand"><a class="logo" href="index.html"><span class="brand-tile"><img src="../shared/img/neuleap-mark.svg" alt=""></span>' +
+      '<span class="logo__stack"><span class="logo__word">Talents Scooper</span><span class="logo__sub">@neuleap.ai</span></span></a>' +
+      '<button class="icon-btn icon-btn--plain sidebar__collapse" data-collapse-toggle aria-label="Collapse sidebar"><i data-lucide="panel-left-close"></i></button></div>' +
       '<nav class="sidebar__nav" aria-label="Main">' + NAV.map(function (n) {
-        return '<a class="nav-item' + (n.key === active ? " is-active" : "") + '" href="' + n.href + '"' + (n.key === active ? ' aria-current="page"' : "") + ' title="' + n.label + '"><i data-lucide="' + n.icon + '"></i><span>' + n.label + "</span></a>";
+        var on = n.key === active;
+        return '<a class="nav-item' + (on ? " is-active" : "") + '" href="' + n.href + '"' + (on ? ' aria-current="page"' : "") + ' title="' + n.label + '"><i data-lucide="' + n.icon + '"></i><span>' + n.label + "</span></a>";
       }).join("") + "</nav>" +
       '<div class="sidebar__footer">' +
-      '<a class="nav-item" href="../index.html" title="All apps"><i data-lucide="layout-grid"></i><span>All Neuleap apps</span></a>' +
-      '<button class="icon-btn icon-btn--plain sidebar__collapse" data-collapse-toggle aria-label="Collapse sidebar"><i data-lucide="panel-left-close"></i></button>' +
-      "</div>";
+      '<button class="signout" id="signout" title="Sign out"><i data-lucide="log-out"></i><span class="signout__text"><strong>Sign out</strong><span>' + esc(USER.email) + "</span></span></button>" +
+      '<span class="version">Version v1.6.4</span></div>';
 
-    var now = new Date(2026, 7, 1);
-    $("[data-topbar]").innerHTML =
-      '<button class="icon-btn menu-toggle" data-nav-toggle aria-label="Open menu"><i data-lucide="menu"></i></button>' +
-      '<h1 class="t-page-title">' + esc(title) + "</h1>" +
-      '<button class="icon-btn icon-btn--plain" id="refresh" aria-label="Refresh"><i data-lucide="refresh-cw"></i></button>' +
-      '<label class="search grow"><i data-lucide="search"></i><span class="sr-only">Search</span><input class="input" id="search" type="search" placeholder="Search"></label>' +
-      '<div class="month-picker"><button class="select" id="month-btn" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="calendar"></i><span id="month-label"></span><i data-lucide="chevron-down"></i></button>' +
-      '<div class="date-pick" id="month-menu" role="dialog" aria-label="Choose month and year" hidden>' +
-      '<label class="date-pick__field"><span class="t-overline">Month</span><span class="select"><select id="pick-month">' + MONTHS_LONG.map(function (m, i) { return '<option value="' + i + '">' + m + "</option>"; }).join("") + '</select><i data-lucide="chevron-down"></i></span></label>' +
-      '<label class="date-pick__field"><span class="t-overline">Year</span><span class="select"><select id="pick-year">' + [2024, 2025, 2026, 2027].map(function (y) { return '<option value="' + y + '">' + y + "</option>"; }).join("") + '</select><i data-lucide="chevron-down"></i></span></label>' +
-      "</div></div>" +
-      '<span class="env-badge" title="Environment">PROD</span>' +
-      '<button class="icon-btn" data-theme-toggle aria-label="Toggle theme"></button>' +
-      '<button class="icon-btn" aria-label="Notifications (2)" id="notif-btn"><i data-lucide="bell"></i><span class="dot"></span></button>' +
-      avatar("Mehek Doshi", 40);
+    if (app.hasAttribute("data-back")) {
+      $("[data-topbar]").innerHTML =
+        '<button class="icon-btn menu-toggle" data-nav-toggle aria-label="Open menu"><i data-lucide="menu"></i></button>' +
+        '<a class="ts-back" href="' + app.getAttribute("data-back") + '"><i data-lucide="arrow-left"></i>Back</a>';
+    } else {
+      $("[data-topbar]").innerHTML =
+        '<button class="icon-btn menu-toggle" data-nav-toggle aria-label="Open menu"><i data-lucide="menu"></i></button>' +
+        '<h1 class="t-page-title">' + esc(title) + "</h1>" +
+        '<button class="icon-btn" id="refresh" aria-label="Refresh"><i data-lucide="refresh-cw"></i></button>' +
+        '<label class="search grow"><i data-lucide="search"></i><span class="sr-only">Search</span><input class="input" id="search" type="search" placeholder="Search"></label>' +
+        '<div class="month-picker"><button class="select" id="month-btn" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="calendar"></i><span id="month-label"></span><i data-lucide="chevron-down"></i></button>' +
+        '<div class="date-pick" id="month-menu" role="dialog" aria-label="Choose month and year" hidden>' +
+        '<label class="date-pick__field"><span class="t-overline">Month</span><span class="select"><select id="pick-month">' + MONTHS_LONG.map(function (m, i) { return '<option value="' + i + '">' + m + "</option>"; }).join("") + '</select><i data-lucide="chevron-down"></i></span></label>' +
+        '<label class="date-pick__field"><span class="t-overline">Year</span><span class="select"><select id="pick-year">' + [2024, 2025, 2026, 2027].map(function (y) { return '<option value="' + y + '">' + y + "</option>"; }).join("") + '</select><i data-lucide="chevron-down"></i></span></label>' +
+        "</div></div>" +
+        '<span class="env-badge" title="Environment">PROD</span>' +
+        '<button class="icon-btn" data-theme-toggle aria-label="Toggle theme"></button>' +
+        '<button class="icon-btn" aria-label="Notifications (2)" id="notif-btn"><i data-lucide="bell"></i><span class="badge-count">2</span></button>' +
+        avatar(USER.name);
+      initTopbar(new Date(2026, 0, 1));
+    }
+    NL.syncTheme();
 
+    $("#signout").addEventListener("click", function () { NL.toast("Signed out", "log-out"); });
+  }
+
+  function initTopbar(now) {
     var menu = $("#month-menu");
     var btn = $("#month-btn");
     var pickMonth = $("#pick-month");
     var pickYear = $("#pick-year");
     pickMonth.value = String(now.getMonth());
     pickYear.value = String(now.getFullYear());
-    function showMonth() {
-      $("#month-label").textContent = MONTHS_LONG[+pickMonth.value] + " " + pickYear.value;
-    }
+    function showMonth() { $("#month-label").textContent = MONTHS_LONG[+pickMonth.value] + " " + pickYear.value; }
     function setOpen(open) {
       menu.hidden = !open;
       btn.setAttribute("aria-expanded", open ? "true" : "false");
@@ -80,20 +95,15 @@
         NL.toast("Showing candidates for " + $("#month-label").textContent, "calendar");
       });
     });
+    document.addEventListener("click", function () { setOpen(false); });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape") setOpen(false); });
-    document.addEventListener("click", function () { setOpen(false); closeMenus(); });
 
     $("#refresh").addEventListener("click", function () {
       var icon = this.querySelector("svg");
       if (icon) icon.animate([{ transform: "rotate(0)" }, { transform: "rotate(360deg)" }], { duration: 600 });
       NL.toast("Data refreshed");
     });
-    $("#notif-btn").addEventListener("click", function () {
-      NL.toast("2 new candidates were added to the pipeline", "bell");
-    });
-
-    NL.syncTheme();
-
+    $("#notif-btn").addEventListener("click", function () { NL.toast("2 new candidates were added to the pipeline", "bell"); });
     $("#search").addEventListener("input", function () {
       var q = this.value.trim().toLowerCase();
       $all("table[data-searchable] tbody tr").forEach(function (tr) {
@@ -103,10 +113,10 @@
   }
 
   function closeMenus() {
-    $all(".row-actions .menu").forEach(function (m) { m.hidden = true; });
+    $all("[data-menu]").forEach(function (m) { m.hidden = true; });
   }
 
-  /* ---------- Round history modal (shared) ---------- */
+  /* ---------- Round history modal (View History) ---------- */
   function historyModal() {
     return '<div class="modal" id="history-modal" role="dialog" aria-labelledby="history-title" aria-hidden="true">' +
       '<div class="modal__header"><div class="grow"><h2 class="t-title" id="history-title">Round history</h2><p class="t-body text-muted" id="history-sub"></p></div>' +
@@ -114,8 +124,8 @@
       '<div class="modal__body"><ol class="timeline">' + D.history.map(function (h) {
         var pending = h.result === "Pending";
         return '<li><span class="timeline__dot' + (pending ? " timeline__dot--pending" : "") + '"><i data-lucide="' + (pending ? "clock" : "check") + '"></i></span>' +
-          '<div class="col gap-4"><div class="row wrap"><strong class="t-body-strong text-strong">' + h.round + '</strong><span class="chip">' + h.role + "</span>" +
-          '<span class="chip ' + (pending ? "" : "chip--success") + '">' + h.result + "</span></div>" +
+          '<div class="col gap-4"><div class="row wrap"><strong class="t-body-strong text-strong">' + h.round + '</strong><span class="t-small text-muted">' + h.role + "</span>" +
+          '<span class="spacer"></span><span class="chip ' + (pending ? "chip--amber" : "chip--success") + '">' + h.result + "</span></div>" +
           '<span class="t-small text-muted">' + esc(h.by) + " · " + h.date + "</span>" +
           (h.note ? '<p class="t-body">' + esc(h.note) + "</p>" : "") + "</div></li>";
       }).join("") + "</ol></div></div>";
@@ -128,69 +138,51 @@
 
   /* ---------- Dashboard ---------- */
   var TABS = [
-    { key: "new", label: "New" },
+    { key: "new", label: "New Candidates" },
     { key: "processing", label: "Processing" },
     { key: "hired", label: "Hired" },
-    { key: "undecided", label: "Undecided" },
-    { key: "rejected", label: "Rejected" }
+    { key: "rejected", label: "Rejected" },
+    { key: "undecided", label: "Undecided" }
   ];
 
-  function statusChip(status) {
-    if (status === "Success") return '<span class="chip chip--success">Success</span>';
-    if (status === "Failed") return '<span class="chip chip--error">Failed</span>';
-    if (status === "Running") return '<span class="chip chip--info">Running…</span>';
-    return '<span class="chip">Queued</span>';
-  }
-
-  function replyChip(reply) {
-    var cls = reply === "Accepted" ? "chip--success" : reply === "Rejected" ? "chip--error" : "";
-    return '<span class="chip ' + cls + '">' + reply + "</span>";
-  }
+  function agingSort(a) { return parseFloat(a) * (/h/.test(a) ? 1 : 24); }
 
   function check(on, label) {
     return '<label class="check" title="' + label + '"><input type="checkbox"' + (on ? " checked" : "") + ' aria-label="' + label + '"></label>';
   }
 
-  function sortTh(label, key) {
-    return '<th class="sortable">' + label + '<i data-lucide="arrow-up-down"></i></th>';
-  }
-
   function dashboardTable(tab) {
     var rows = D.pipeline[tab];
-    if (!rows.length) {
-      return '<div class="empty"><i data-lucide="inbox"></i><p class="t-subhead">No undecided candidates</p><p class="t-body">Candidates you put on hold after an interview will show up here.</p></div>';
-    }
     var head, body;
     var base = function (c) {
-      return "<td>" + person(c.name) + '</td><td data-sort="' + parseFloat(c.aging) * (/h/.test(c.aging) ? 1 : 24) + '">' + c.aging + '</td><td data-sort="' + Date.parse(c.received) + '">' + c.received + '</td><td data-sort="' + c.experience + '">' + c.experience + " y</td><td>" + esc(c.college) + "</td>";
+      return "<td>" + person(c.name) + '</td><td class="num" data-sort="' + agingSort(c.aging) + '">' + c.aging + '</td><td data-sort="' + Date.parse(c.received) + '">' + c.received + '</td><td class="num" data-sort="' + c.experience + '">' + c.experience + " y</td><td>" + esc(c.college) + "</td>";
     };
-    var history = function (c) { return '<td><button class="btn btn--ghost btn--sm" data-history="' + esc(c.name) + '"><i data-lucide="history"></i>View History</button></td>'; };
+    var baseHead = '<th>Name</th><th class="num sortable">Aging' + sortIcon() + '</th><th class="sortable">Received' + sortIcon() + '</th><th class="num">Experience</th><th>College</th>';
 
     if (tab === "new") {
-      head = "<th>Name</th>" + sortTh("Aging") + sortTh("Received") + sortTh("Experience") + "<th>College</th><th>Status</th><th>Reason</th>";
+      head = baseHead + "<th>Status</th><th>Reason</th>";
       body = rows.map(function (c) {
-        return '<tr class="is-clickable" data-id="' + c.id + '">' + base(c) + '<td data-status="' + c.id + '">' + statusChip(c.status) + '</td><td class="text-muted">' + esc(c.reason) + "</td></tr>";
-      }).join("");
-    } else if (tab === "processing") {
-      head = "<th>Name</th>" + sortTh("Aging") + sortTh("Received") + sortTh("Experience") + "<th>College</th><th>Stage</th><th>History</th><th>Action</th>";
-      body = rows.map(function (c) {
-        return '<tr data-id="' + c.id + '">' + base(c) + '<td><span class="chip chip--info">' + c.stage + "</span></td>" + history(c) +
-          '<td><div class="row-actions"><button class="btn btn--outline btn--sm" data-move>Move to<i data-lucide="chevron-down"></i></button>' +
-          '<div class="menu" hidden>' + D.moveTo.map(function (m) { return '<button data-move-to="' + esc(m) + '"><i data-lucide="' + (m === "Directly Hire" ? "badge-check" : "arrow-right-circle") + '"></i>' + m + "</button>"; }).join("") +
-          '<hr class="divider" style="margin:6px 0"><button data-move-to="Reject"><i data-lucide="x-circle" style="color:var(--status-error-text)"></i>Reject</button></div></div></td></tr>';
+        return '<tr class="is-clickable" data-id="' + c.id + '">' + base(c) + "<td" + (c.status === "Failed" ? ' class="text-error"' : "") + ">" + c.status + "</td><td>" + esc(c.reason) + "</td></tr>";
       }).join("");
     } else if (tab === "hired") {
-      head = "<th>Name</th><th>Role</th>" + sortTh("Joining date") + "<th>Offer letter</th><th>Offer reply</th><th>BG verified</th><th>IT asset allocated</th><th>Buddy assigned</th><th>Induction scheduled</th><th>History</th>";
+      head = '<th>Name</th><th>Role</th><th>Joining Date</th><th>History</th><th class="center">Offer Letter</th><th class="wrap">Offer Reply</th><th class="center">IT Asset Allocated</th><th class="center">Induction Scheduled</th><th class="center">BG Verified</th><th class="center">Buddy Assigned</th>';
       body = rows.map(function (c) {
-        return '<tr data-id="' + c.id + '"><td>' + person(c.name) + "</td><td>" + c.role + '</td><td data-sort="' + Date.parse(c.joining) + '">' + c.joining + "</td>" +
-          "<td>" + (c.offerLetter ? '<span class="bool bool--yes"><i data-lucide="check"></i></span>' : '<button class="btn btn--outline btn--sm" data-send-offer>Send</button>') + "</td>" +
-          "<td>" + replyChip(c.offerReply) + "</td><td>" + check(c.bgVerified, "BG verified") + "</td><td>" + check(c.itAsset, "IT asset allocated") + "</td><td>" + check(c.buddy, "Buddy assigned") + "</td><td>" + check(c.induction, "Induction scheduled") + "</td>" + history(c) + "</tr>";
+        var accepted = c.offerReply === "Accepted";
+        var box = function (on, label) { return '<td class="center">' + (accepted ? check(on, label) : "-") + "</td>"; };
+        return '<tr data-id="' + c.id + '"><td>' + person(c.name) + "</td>" +
+          '<td><span class="inline-select"><select aria-label="Role for ' + esc(c.name) + '">' + ["Gen AI", "Data Engineer", "UX Designer"].map(function (r) { return "<option" + (r === c.role ? " selected" : "") + ">" + r + "</option>"; }).join("") + '</select><i data-lucide="chevron-down"></i></span></td>' +
+          '<td><span class="cell-date">' + c.joining + '<i data-lucide="calendar"></i></span></td>' +
+          '<td><button class="link-u" data-history="' + esc(c.name) + '">View History</button></td>' +
+          '<td class="center">' + check(c.offerLetter, "Offer letter sent") + '</td><td class="center">' + c.offerReply + "</td>" +
+          box(c.itAsset, "IT asset allocated") + box(c.induction, "Induction scheduled") + box(c.bgVerified, "BG verified") + box(c.buddy, "Buddy assigned") + "</tr>";
       }).join("");
     } else {
-      head = "<th>Name</th>" + sortTh("Aging") + sortTh("Received") + sortTh("Experience") + "<th>College</th><th>History</th>";
-      body = rows.map(function (c) { return '<tr data-id="' + c.id + '">' + base(c) + history(c) + "</tr>"; }).join("");
+      head = baseHead + "<th>History</th>";
+      body = rows.map(function (c) {
+        return '<tr class="is-clickable" data-id="' + c.id + '">' + base(c) + '<td><button class="link-u" data-history="' + esc(c.name) + '">View History</button></td></tr>';
+      }).join("");
     }
-    return '<div class="table-wrap"><table class="table" data-sortable data-searchable><thead><tr>' + head + "</tr></thead><tbody>" + body + "</tbody></table></div>";
+    return '<table class="ts-table" data-sortable data-searchable><thead><tr>' + head + "</tr></thead><tbody>" + body + "</tbody></table>";
   }
 
   function initDashboard() {
@@ -199,16 +191,12 @@
     var current = (location.hash || "#new").slice(1);
     if (!D.pipeline[current]) current = "new";
 
-    function renderTabs() {
-      tabsEl.innerHTML = TABS.map(function (t) {
-        return '<button class="tab' + (t.key === current ? " is-active" : "") + '" role="tab" aria-selected="' + (t.key === current) + '" data-status-tab="' + t.key + '">' + t.label + '<span class="count">' + D.pipeline[t.key].length + "</span></button>";
-      }).join("");
-    }
-
     function render() {
-      renderTabs();
+      tabsEl.innerHTML = TABS.map(function (t) {
+        var on = t.key === current;
+        return '<button class="utab' + (on ? " is-active" : "") + '" role="tab" aria-selected="' + on + '" data-status-tab="' + t.key + '">' + t.label + " (" + D.pipeline[t.key].length + ")</button>";
+      }).join("");
       panel.innerHTML = dashboardTable(current);
-      $("#run-pipeline").hidden = current !== "new";
       NL.initSortable(panel);
       NL.icons();
       var q = $("#search");
@@ -226,50 +214,14 @@
     panel.addEventListener("click", function (e) {
       var h = e.target.closest("[data-history]");
       if (h) { e.stopPropagation(); openHistory(h.getAttribute("data-history")); return; }
-      var move = e.target.closest("[data-move]");
-      if (move) {
-        e.stopPropagation();
-        var menu = move.nextElementSibling;
-        var wasHidden = menu.hidden;
-        closeMenus();
-        menu.hidden = !wasHidden;
-        return;
-      }
-      var to = e.target.closest("[data-move-to]");
-      if (to) {
-        e.stopPropagation();
-        var tr = to.closest("tr");
-        var id = tr.getAttribute("data-id");
-        var target = to.getAttribute("data-move-to");
-        var idx = D.pipeline.processing.findIndex(function (c) { return c.id === id; });
-        var c = D.pipeline.processing.splice(idx, 1)[0];
-        if (target === "Directly Hire") {
-          D.pipeline.hired.push(Object.assign({}, c, { joining: "To be decided", offerLetter: false, offerReply: "No Response", bgVerified: false, itAsset: false, buddy: false, induction: false }));
-        } else if (target === "Reject") {
-          D.pipeline.rejected.push(c);
-        } else {
-          c.stage = target.replace("Move to ", "").replace(" Round", "") === "Screening" ? "Screening" : target.replace("Move to ", "");
-          D.pipeline.processing.splice(idx, 0, c);
-        }
-        render();
-        NL.toast(c.name + (target === "Reject" ? " moved to Rejected" : target === "Directly Hire" ? " moved to Hired" : " → " + target.replace("Move to ", "")));
-        return;
-      }
-      var offer = e.target.closest("[data-send-offer]");
-      if (offer) {
-        e.stopPropagation();
-        offer.outerHTML = '<span class="bool bool--yes"><i data-lucide="check"></i></span>';
-        NL.icons();
-        NL.toast("Offer letter sent", "mail-check");
-        return;
-      }
-      if (e.target.closest("input, label, button")) return;
-      var row = e.target.closest("tr[data-id]");
+      if (e.target.closest("input, label, select, button")) return;
+      var row = e.target.closest("tr.is-clickable");
       if (row) location.href = "candidate.html?id=" + row.getAttribute("data-id");
     });
 
     panel.addEventListener("change", function (e) {
       if (e.target.type === "checkbox") NL.toast((e.target.checked ? "Marked: " : "Unmarked: ") + e.target.getAttribute("aria-label"));
+      if (e.target.tagName === "SELECT") NL.toast("Role updated to " + e.target.value);
     });
 
     $("#run-pipeline").addEventListener("click", function () {
@@ -277,16 +229,13 @@
       btn.disabled = true;
       btn.innerHTML = '<i data-lucide="loader-circle"></i>Running…';
       NL.icons();
-      var queued = D.pipeline.new.filter(function (c) { return c.status !== "Success"; });
-      queued.forEach(function (c) { c.status = "Running"; });
-      render();
       setTimeout(function () {
-        queued.forEach(function (c) { c.status = "Success"; c.reason = "-"; });
+        D.pipeline.new.forEach(function (c) { c.status = "Success"; c.reason = "-"; });
         btn.disabled = false;
         btn.innerHTML = '<i data-lucide="play"></i>Run Pipeline';
         render();
-        NL.toast("Pipeline finished — " + queued.length + " resumes processed");
-      }, 1800);
+        NL.toast("Pipeline finished — " + D.pipeline.new.length + " resumes processed");
+      }, 1600);
     });
 
     window.addEventListener("hashchange", function () {
@@ -300,7 +249,7 @@
   /* ---------- Interview schedule ---------- */
   function slotChip(slot) {
     var cls = { Open: "chip--success", Confirmed: "chip--info", Busy: "chip--error", Tentative: "chip--warning", Pending: "" }[slot];
-    return '<span class="chip chip--dot ' + cls + '">' + slot + "</span>";
+    return '<span class="chip ' + cls + '">' + slot + "</span>";
   }
 
   function initSchedule() {
@@ -311,8 +260,8 @@
     function render() {
       body.innerHTML = D.schedule.map(function (r, i) {
         var assign = r.slot === "Open" || r.slot === "Pending";
-        return '<tr data-row="' + i + '"><td>' + person(r.name) + '</td><td data-sort="' + parseFloat(r.aging) * (/h/.test(r.aging) ? 1 : 24) + '">' + r.aging + "</td><td>" + r.role + "</td><td>" + r.stage + "</td><td>" + esc(r.interviewer) + "</td><td>" + slotChip(r.slot) + "</td>" +
-          '<td><button class="btn btn--sm ' + (assign ? "btn--outline" : "btn--destructive") + '" data-assign="' + i + '">' + (assign ? "Assign" : "Reassign") + "</button></td></tr>";
+        return '<tr data-row="' + i + '"><td>' + person(r.name) + '</td><td class="num" data-sort="' + agingSort(r.aging) + '">' + r.aging + "</td><td>" + r.role + "</td><td>" + r.stage + "</td><td>" + esc(r.interviewer) + "</td><td>" + slotChip(r.slot) + "</td>" +
+          '<td><button class="btn-assign' + (assign ? "" : " btn-assign--reassign") + '" data-assign="' + i + '">' + (assign ? "Assign" : "Reassign") + "</button></td></tr>";
       }).join("");
       NL.icons();
     }
@@ -323,7 +272,7 @@
       $("#interviewer-list").innerHTML = D.interviewers.map(function (iv, i) {
         var selected = choice && choice.i === i;
         return '<div class="interviewer' + (selected ? " is-selected" : "") + '" data-iv="' + i + '">' +
-          '<div class="row gap-12">' + avatar(iv.name, 40) + '<div class="grow"><div class="t-body-strong text-strong">' + esc(iv.name) + '</div><div class="t-small text-muted">This week: ' + iv.load + " interview" + (iv.load === 1 ? "" : "s") + "</div></div>" +
+          '<div class="row gap-12">' + avatar(iv.name) + '<div class="grow"><div class="t-body-strong text-strong">' + esc(iv.name) + '</div><div class="t-small text-muted">This week: ' + iv.load + " interview" + (iv.load === 1 ? "" : "s") + "</div></div>" +
           (iv.name === r.interviewer ? '<span class="chip chip--info">Suggested</span>' : "") + "</div>" +
           '<div class="slot-list">' + iv.slots.map(function (s, j) {
             return '<button class="slot' + (selected && choice.j === j ? " is-active" : "") + '" data-slot="' + j + '">' + s + "</button>";
@@ -348,9 +297,8 @@
     $("#interviewer-list").addEventListener("click", function (e) {
       var card = e.target.closest("[data-iv]");
       if (!card) return;
-      var i = +card.getAttribute("data-iv");
       var slot = e.target.closest("[data-slot]");
-      choice = { i: i, j: slot ? +slot.getAttribute("data-slot") : 0 };
+      choice = { i: +card.getAttribute("data-iv"), j: slot ? +slot.getAttribute("data-slot") : 0 };
       renderOverlay();
     });
 
@@ -367,97 +315,113 @@
     });
 
     render();
+    NL.initSortable($(".ts-panel"));
   }
 
   /* ---------- Question banks ---------- */
   function initBanks() {
-    var role = D.banks.roles[0];
+    var roleFilter = "All";
+    var activeRow = null;
     var activeTag = null;
-
-    $("#role-tabs").innerHTML = D.banks.roles.map(function (r, i) {
-      return '<button class="tab' + (i === 0 ? " is-active" : "") + '" data-role="' + r + '">' + r + "</button>";
-    }).join("");
-    $("#role-tabs").addEventListener("click", function (e) {
-      var t = e.target.closest("[data-role]");
-      if (!t) return;
-      role = t.getAttribute("data-role");
-      $all("[data-role]", this).forEach(function (b) { b.classList.toggle("is-active", b === t); });
-      renderQueue();
-    });
+    var ROLES = ["Data Engineer", "Gen AI", "UX Designer"];
 
     function renderQueue() {
-      var key = role === "Data Engineering" ? "Data Engineer" : role === "UX Design" ? "UX Designer" : role;
-      var rows = D.banks.queue.filter(function (q) { return q.role === key; });
-      $("#queue-body").innerHTML = rows.length ? rows.map(function (q) {
-        var i = D.banks.queue.indexOf(q);
-        return "<tr><td>" + person(q.name) + "</td><td>" + q.role + "</td><td>" + q.stage + "</td><td>" + esc(q.interviewer) + "</td><td>" +
-          (q.assigned
-            ? '<button class="btn btn--sm btn--ghost" data-bank="' + i + '" style="color:var(--status-success-text)"><i data-lucide="check"></i>Bank assigned</button>'
-            : '<button class="btn btn--sm btn--outline" data-bank="' + i + '">Assign bank</button>') + "</td></tr>";
-      }).join("") : '<tr><td colspan="5" class="table-empty">No queued interviews for ' + role + "</td></tr>";
+      var rows = D.banks.queue.map(function (q, i) { return { q: q, i: i }; }).filter(function (x) { return roleFilter === "All" || x.q.role === roleFilter; });
+      $("#queue-body").innerHTML = rows.map(function (x) {
+        var q = x.q;
+        return '<tr><td class="ts-name">' + esc(q.name) + '</td><td class="num"><span class="inline-select"><select data-role="' + x.i + '" aria-label="Role for ' + esc(q.name) + '">' + ROLES.map(function (r) { return "<option" + (r === q.role ? " selected" : "") + ">" + r + "</option>"; }).join("") + '</select><i data-lucide="chevron-down"></i></span></td>' +
+          '<td class="num">' + q.stage + "</td><td>" + esc(q.interviewer) + '</td><td class="center">' +
+          (q.assigned ? '<button class="btn-assign is-assigned" data-bank="' + x.i + '">Assigned</button>' : '<button class="btn-assign" data-bank="' + x.i + '">Assign Bank</button>') + "</td></tr>";
+      }).join("") || '<tr><td colspan="5" class="t-body text-muted" style="padding:24px 12px">No interviews for ' + roleFilter + "</td></tr>";
       NL.icons();
     }
+
+    $("#role-filter").addEventListener("click", function (e) {
+      e.stopPropagation();
+      var menu = $("#role-menu");
+      menu.hidden = !menu.hidden;
+    });
+    $("#role-menu").addEventListener("click", function (e) {
+      var b = e.target.closest("[data-filter]");
+      if (!b) return;
+      roleFilter = b.getAttribute("data-filter");
+      $("#role-filter").classList.toggle("text-link", roleFilter !== "All");
+      this.hidden = true;
+      renderQueue();
+    });
+    document.addEventListener("click", closeMenus);
+
+    $("#queue-body").addEventListener("change", function (e) {
+      var sel = e.target.closest("[data-role]");
+      if (!sel) return;
+      D.banks.queue[+sel.getAttribute("data-role")].role = sel.value;
+      NL.toast("Role updated to " + sel.value);
+    });
 
     $("#queue-body").addEventListener("click", function (e) {
       var b = e.target.closest("[data-bank]");
       if (!b) return;
       var q = D.banks.queue[+b.getAttribute("data-bank")];
-      q.assigned = !q.assigned;
-      renderQueue();
-      if (q.assigned) NL.toast("Question bank assigned to " + q.name + "’s interview");
+      if (q.assigned) {
+        q.assigned = false;
+        renderQueue();
+        NL.toast("Bank unassigned from " + q.name);
+        return;
+      }
+      activeRow = +b.getAttribute("data-bank");
+      $("#bank-sub").textContent = q.name + " · " + q.role + " · " + q.stage + " · " + q.interviewer;
+      renderBank();
+      NL.open("bank-modal");
     });
 
-    function renderTags() {
+    function renderBank() {
       var counts = {};
       D.banks.questions.forEach(function (q) { counts[q.tag] = (counts[q.tag] || 0) + 1; });
       $("#tag-filter").innerHTML = '<button class="tag' + (!activeTag ? " is-active" : "") + '" data-tag="">All · ' + D.banks.questions.length + "</button>" +
-        Object.keys(counts).map(function (t) {
-          return '<button class="tag' + (activeTag === t ? " is-active" : "") + '" data-tag="' + esc(t) + '">' + esc(t) + " · " + counts[t] + "</button>";
-        }).join("");
+        Object.keys(counts).map(function (t) { return '<button class="tag' + (activeTag === t ? " is-active" : "") + '" data-tag="' + esc(t) + '">' + esc(t) + " · " + counts[t] + "</button>"; }).join("");
+      $("#question-list").innerHTML = D.banks.questions.map(function (q, i) {
+        if (activeTag && q.tag !== activeTag) return "";
+        var lvl = q.level === "Hard" ? "chip--error" : q.level === "Easy" ? "chip--success" : "chip--warning";
+        return '<label class="question"><span class="check"><input type="checkbox" data-q="' + i + '"' + (q.off ? "" : " checked") + ' aria-label="Include question"></span><span class="col gap-8 grow"><span class="text-strong">' + esc(q.text) + '</span><span class="row wrap"><span class="chip chip--info">' + esc(q.tag) + '</span><span class="chip ' + lvl + '">' + q.level + "</span></span></span></label>";
+      }).join("");
+      updateSelected();
+      NL.icons();
     }
 
-    function renderQuestions() {
-      var list = D.banks.questions.filter(function (q) { return !activeTag || q.tag === activeTag; });
-      $("#question-list").innerHTML = list.map(function (q) {
-        var n = D.banks.questions.indexOf(q) + 1;
-        var lvl = q.level === "Hard" ? "chip--error" : q.level === "Easy" ? "chip--success" : "chip--warning";
-        return '<div class="question"><span class="question__num">' + n + '.</span><div class="col grow"><p class="t-body-lg text-strong">' + esc(q.text) + '</p><div class="row wrap"><span class="chip chip--info">' + esc(q.tag) + '</span><span class="chip ' + lvl + '">' + q.level + "</span></div></div>" +
-          '<button class="icon-btn icon-btn--plain" data-remove="' + (n - 1) + '" aria-label="Remove question"><i data-lucide="trash-2"></i></button></div>';
-      }).join("");
-      $("#selected-count").textContent = D.banks.questions.length;
-      renderTags();
-      NL.icons();
+    function updateSelected() {
+      var n = D.banks.questions.filter(function (q) { return !q.off; }).length;
+      $("#selected-count").textContent = n + " questions selected";
     }
 
     $("#tag-filter").addEventListener("click", function (e) {
       var t = e.target.closest("[data-tag]");
       if (!t) return;
       activeTag = t.getAttribute("data-tag") || null;
-      renderQuestions();
+      renderBank();
     });
-
-    $("#question-list").addEventListener("click", function (e) {
-      var b = e.target.closest("[data-remove]");
-      if (!b) return;
-      D.banks.questions.splice(+b.getAttribute("data-remove"), 1);
-      renderQuestions();
-      NL.toast("Question removed from bank", "trash-2");
+    $("#question-list").addEventListener("change", function (e) {
+      var c = e.target.closest("[data-q]");
+      if (!c) return;
+      D.banks.questions[+c.getAttribute("data-q")].off = !c.checked;
+      updateSelected();
     });
-
     $("#new-question-form").addEventListener("submit", function (e) {
       e.preventDefault();
       var text = $("#new-question").value.trim();
       if (!text) return;
       D.banks.questions.push({ text: text, tag: $("#new-question-tag").value, level: "Medium" });
       $("#new-question").value = "";
-      renderQuestions();
-      NL.toast("Question added");
+      renderBank();
     });
     $("#new-question-tag").innerHTML = D.banks.tags.map(function (t) { return "<option>" + esc(t) + "</option>"; }).join("");
-    $("#bank-select").innerHTML = ["Gen AI · Round 1 bank", "Gen AI · Final round bank", "Data Engineering · Core", "UX Design · Portfolio review"].map(function (b) { return "<option>" + b + "</option>"; }).join("");
-    $("#bank-select").addEventListener("change", function () { NL.toast("Existing bank selected: " + this.value); });
-    $("#random-send").addEventListener("change", function () {
-      NL.toast(this.checked ? "Random question sets will be sent to interviewers" : "Random send turned off");
+    $("#bank-select").innerHTML = '<option value="">Assign Existing Bank</option>' + ["Gen AI · Round 1 bank", "Gen AI · Final round bank", "Data Engineering · Core", "UX Design · Portfolio review"].map(function (b) { return "<option>" + b + "</option>"; }).join("");
+    $("#confirm-bank").addEventListener("click", function () {
+      var q = D.banks.queue[activeRow];
+      q.assigned = true;
+      NL.close("bank-modal");
+      renderQueue();
+      var existing = $("#bank-select").value;
+      NL.toast((existing || $("#selected-count").textContent) + " — assigned to " + q.name + "’s interview");
     });
 
     /* Upload modal */
@@ -469,10 +433,7 @@
       var name = input.value.trim();
       if (!name) { input.focus(); return; }
       D.banks.topics.push(name);
-      var label = document.createElement("label");
-      label.className = "radio";
-      label.innerHTML = '<input type="radio" name="topic" checked value="' + esc(name) + '">' + esc(name);
-      $("#topic-list").appendChild(label);
+      $("#topic-list").insertAdjacentHTML("beforeend", '<label class="radio"><input type="radio" name="topic" checked value="' + esc(name) + '">' + esc(name) + "</label>");
       input.value = "";
     });
     var fileInput = $("#bank-file");
@@ -495,59 +456,98 @@
     });
 
     renderQueue();
-    renderQuestions();
   }
 
-  /* ---------- Candidate nest ---------- */
+  /* ---------- Candidate ---------- */
   function initCandidate() {
     var id = new URLSearchParams(location.search).get("id");
-    var c = D.candidates.find(function (x) { return x.id === id; }) || D.candidates[1];
+    var all = [].concat(D.candidates, D.pipeline.new, D.pipeline.processing, D.pipeline.hired, D.pipeline.rejected, D.pipeline.undecided);
+    var c = all.find(function (x) { return x.id === id; }) || D.candidates[0];
     var P = D.profile;
+    document.title = c.name + " · Talents Scooper";
     $all("[data-c-name]").forEach(function (el) { el.textContent = c.name; });
     $("#c-avatar").textContent = NL.initials(c.name);
     $("#c-id").textContent = c.id;
     $("#c-email").textContent = c.email;
     $("#c-phone").textContent = c.phone;
     $("#c-location").textContent = c.location;
-    $("#c-role").textContent = c.role;
     $("#c-summary").textContent = P.summary;
-    document.title = c.name + " · Talents Scooper";
-
-    $("#c-analysis").innerHTML = P.analysis.map(function (a) {
-      return '<div class="analysis__item"><span class="score score--' + a.score + '">' + a.score + '</span><div class="col"><strong class="t-body-strong text-strong">' + a.title + '</strong><p class="t-body text-muted">' + esc(a.text) + "</p></div></div>";
+    $("#c-analysis").innerHTML = P.analysis.map(function (a, i) {
+      return '<div class="analysis-item"><div class="analysis-item__head"><span class="num-tile">' + (i + 1) + "</span>" + a.title + "</div><p>" + esc(a.text) + "</p></div>";
     }).join("");
-    var avg = P.analysis.reduce(function (s, a) { return s + a.score; }, 0) / P.analysis.length;
-    $("#c-score").textContent = avg.toFixed(1) + " / 5";
-    $("#c-certs").innerHTML = P.certifications.map(function (t) { return '<span class="chip chip--purple chip--lg"><i data-lucide="award"></i>' + esc(t) + "</span>"; }).join("");
-    $("#c-college").textContent = P.education.college;
-    $("#c-degree").textContent = P.education.degree;
-    $("#c-cgpa").textContent = P.education.cgpa;
-    $("#c-passout").textContent = P.education.passout;
-    $("#c-rounds").innerHTML = D.history.map(function (h) {
+    var rounds = D.history.filter(function (h) { return h.result === "Pending"; }).concat(D.history.filter(function (h) { return h.result !== "Pending"; }));
+    $("#c-rounds").innerHTML = rounds.map(function (h) {
       var pending = h.result === "Pending";
-      return '<li><span class="timeline__dot' + (pending ? " timeline__dot--pending" : "") + '"><i data-lucide="' + (pending ? "clock" : "check") + '"></i></span>' +
-        '<div class="col gap-4"><div class="row wrap"><strong class="t-body-strong text-strong">' + h.round + '</strong><span class="t-small text-muted">' + esc(h.by) + " · " + h.date + "</span></div>" +
-        (h.note ? '<p class="t-body">' + esc(h.note) + "</p>" : '<p class="t-body text-muted">Interviewer not assigned yet.</p>') + "</div></li>";
+      return '<div class="item-box' + (pending ? " item-box--amber" : "") + '"><div class="col grow" style="gap:2px"><span><strong>' + h.round + '</strong> <span class="small">' + h.role + '</span></span><span class="small">' + h.date + (h.by !== "Not assigned" ? " · " + esc(h.by) : "") + "</span></div>" +
+        '<span class="chip ' + (pending ? "chip--amber" : "chip--success") + '">' + h.result + "</span></div>";
     }).join("");
-    $("#audit-list").innerHTML = P.audit.map(function (a) {
-      return '<li><span class="timeline__dot"><i data-lucide="activity"></i></span><div class="col gap-4"><strong class="t-body-medium text-strong">' + esc(a.text) + '</strong><span class="t-small text-muted">' + esc(a.by) + " · " + a.at + "</span></div></li>";
+    $("#c-certs").innerHTML = P.certifications.map(function (t) {
+      return '<div class="item-box item-box--amber"><span class="medal"><i data-lucide="award"></i></span><strong>' + esc(t) + "</strong></div>";
     }).join("");
+    var edu = [["College", P.education.college, "school"], ["Highest Degree", P.education.degree, "graduation-cap"], ["Passout", P.education.passout, "calendar"], ["CGPA", P.education.cgpa, "award"]];
+    $("#c-edu").innerHTML = edu.map(function (e) {
+      return '<div class="item-box"><span class="edu-icon"><i data-lucide="' + e[2] + '"></i></span><div class="col" style="gap:2px"><span class="edu-label">' + e[0] + "</span><strong>" + esc(e[1]) + "</strong></div></div>";
+    }).join("");
+
+    function auditRow(a) {
+      return '<div class="audit-row"><span class="text-muted">' + a.at + "</span><span>" + esc(a.by) + '</span><span class="text-strong">' + esc(a.text) + "</span></div>";
+    }
+    $("#c-audit").innerHTML = P.audit.map(auditRow).join("");
+    function logAction(text) {
+      $("#c-audit").insertAdjacentHTML("afterbegin", auditRow({ at: "Just now", by: USER.name, text: text }));
+      $("#audit-card").open = true;
+    }
+
+    $("#update-menu").innerHTML = D.moveTo.map(function (m) { return '<button data-move-to="' + esc(m) + '"><i data-lucide="' + (m === "Directly Hire" ? "badge-check" : "arrow-right-circle") + '"></i>' + m + "</button>"; }).join("") +
+      '<button data-move-to="Reject"><i data-lucide="x-circle"></i>Reject</button>';
+    $("#update-btn").addEventListener("click", function (e) {
+      e.stopPropagation();
+      var m = $("#update-menu");
+      m.hidden = !m.hidden;
+    });
+    $("#update-menu").addEventListener("click", function (e) {
+      var b = e.target.closest("[data-move-to]");
+      if (!b) return;
+      this.hidden = true;
+      var to = b.getAttribute("data-move-to");
+      var text = to === "Reject" ? "Rejected" : to;
+      logAction(text);
+      NL.toast(c.name + ": " + text);
+    });
+    document.addEventListener("click", closeMenus);
 
     $("#note-form").addEventListener("submit", function (e) {
       e.preventDefault();
       var text = $("#note-text").value.trim();
       if (!text) return;
-      var li = document.createElement("li");
-      li.innerHTML = '<span class="timeline__dot"><i data-lucide="sticky-note"></i></span><div class="col gap-4"><strong class="t-body-medium text-strong">Note added</strong><p class="t-body">' + esc(text) + '</p><span class="t-small text-muted">You · just now</span></div>';
-      $("#audit-list").prepend(li);
+      logAction("Note: " + text);
       $("#note-text").value = "";
       NL.close("note-modal");
-      NL.icons();
       NL.toast("Note saved");
     });
-    $("#view-resume").addEventListener("click", function () {
-      NL.toast("Resume preview opens in the document viewer", "file-text");
-    });
+    $("#view-resume").addEventListener("click", function () { NL.toast("Opening resume in a new tab…", "file-text"); });
+  }
+
+  /* ---------- Token usage ---------- */
+  function initUsage() {
+    var rows = [
+      { feature: "Resume parsing", model: "claude-sonnet-5-5", calls: 1284, tokens: 3.9, cost: 38.4 },
+      { feature: "Analysis report", model: "claude-sonnet-5-5", calls: 1102, tokens: 5.2, cost: 51.0 },
+      { feature: "One-line summary", model: "claude-haiku-5-5", calls: 1102, tokens: 0.6, cost: 1.9 },
+      { feature: "Interviewer suggestions", model: "claude-haiku-5-5", calls: 412, tokens: 0.4, cost: 1.2 },
+      { feature: "Question generation", model: "claude-sonnet-5-5", calls: 96, tokens: 0.9, cost: 8.7 }
+    ];
+    var total = rows.reduce(function (a, r) { return { calls: a.calls + r.calls, tokens: a.tokens + r.tokens, cost: a.cost + r.cost }; }, { calls: 0, tokens: 0, cost: 0 });
+    $("#usage-kpis").innerHTML = [
+      [total.tokens.toFixed(1) + "M", "Tokens this month"],
+      ["$" + total.cost.toFixed(2), "Estimated cost"],
+      [total.calls.toLocaleString(), "Requests"],
+      ["$" + (total.cost / 1102).toFixed(3), "Cost per candidate"]
+    ].map(function (k) { return '<div class="usage-kpi"><strong>' + k[0] + "</strong><span>" + k[1] + "</span></div>"; }).join("");
+    $("#usage-body").innerHTML = rows.map(function (r) {
+      return '<tr><td class="ts-name">' + r.feature + '</td><td class="text-muted">' + r.model + '</td><td class="num" data-sort="' + r.calls + '">' + r.calls.toLocaleString() + '</td><td class="num" data-sort="' + r.tokens + '">' + r.tokens.toFixed(1) + 'M</td><td class="num" data-sort="' + r.cost + '">$' + r.cost.toFixed(2) + "</td></tr>";
+    }).join("");
+    NL.initSortable($(".ts-panel"));
   }
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -558,7 +558,7 @@
       if (h && !$("#status-panel")) openHistory(h.getAttribute("data-history"));
     });
     var page = $(".app").getAttribute("data-nav");
-    ({ dashboard: initDashboard, schedule: initSchedule, banks: initBanks, candidates: initCandidate }[page] || function () {})();
+    ({ dashboard: initDashboard, schedule: initSchedule, banks: initBanks, candidates: initCandidate, usage: initUsage }[page] || function () {})();
     NL.icons();
   });
 })();

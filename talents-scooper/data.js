@@ -36,30 +36,52 @@ window.TS_DATA = (function () {
     return ids.map(function (i) { return candidates[i]; });
   }
 
+  var FIRST = ["Aditi", "Rahul", "Sneha", "Kabir", "Isha", "Nikhil", "Pooja", "Siddharth", "Tanvi", "Yash", "Riya", "Aman", "Zoya", "Varun", "Nisha", "Harsh", "Kavya", "Dev", "Simran", "Omkar"];
+  var LAST = ["Kapoor", "Joshi", "Reddy", "Bose", "Menon", "Patil", "Shah", "Chopra", "Desai", "Naidu", "Ghosh", "Bhat"];
+  var COLLEGES = ["IIT Madras", "BITS Pilani", "NIT Trichy", "VIT Vellore", "IIIT Hyderabad", "College of Engineering, Pune", "Jadavpur University", "Delhi Technological University", "PICT Pune", "Manipal Institute of Technology"];
+  var ROLES = ["Gen AI", "Data Engineer", "UX Designer"];
+
+  // Builds n sample candidates; the first rows reuse the named people above.
+  function makeCandidates(n, offset) {
+    var out = [];
+    for (var i = 0; i < n; i++) {
+      var k = i + offset;
+      var base = candidates[k % candidates.length];
+      var name = k < candidates.length ? base.name : FIRST[k % FIRST.length] + " " + LAST[(k * 7) % LAST.length];
+      out.push(Object.assign({}, base, {
+        id: "C" + (2000 + k),
+        name: name,
+        college: COLLEGES[k % COLLEGES.length],
+        role: ROLES[k % ROLES.length],
+        aging: (k % 6) + 1 + "d",
+        received: dates[k % dates.length],
+        experience: [2.5, 1, 3, 0.8, 4, 1.5][k % 6]
+      }));
+    }
+    return out;
+  }
+
   var pipeline = {
-    new: pick([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).map(function (c, i) {
-      var status = i % 4 === 3 ? "Failed" : i % 5 === 4 ? "-" : "Success";
-      return Object.assign({}, c, {
-        status: status,
-        reason: status === "Failed" ? "Resume could not be parsed" : status === "-" ? "Queued for pipeline" : "-"
+    new: makeCandidates(16, 0).map(function (c, i) {
+      return Object.assign(c, { status: i === 5 ? "Failed" : "Success", reason: i === 5 ? "Resume could not be parsed" : "-" });
+    }),
+    processing: makeCandidates(25, 3).map(function (c, i) {
+      return Object.assign(c, { stage: ["Screening", "Round 1", "Round 2", "Final Round"][i % 4] });
+    }),
+    hired: makeCandidates(5, 6).map(function (c, i) {
+      return Object.assign(c, {
+        role: "Gen AI",
+        joining: "21 August 2026",
+        offerLetter: true,
+        offerReply: ["Accepted", "Accepted", "Rejected", "Accepted", "No Response"][i],
+        itAsset: [true, true, false, true, false][i],
+        induction: [true, true, false, true, false][i],
+        bgVerified: [true, true, false, true, false][i],
+        buddy: [true, true, false, true, false][i]
       });
     }),
-    processing: pick([1, 2, 5, 7, 10, 11]).map(function (c, i) {
-      return Object.assign({}, c, { stage: ["Screening", "Round 1", "Round 2", "Round 1", "Final Round", "Screening"][i] });
-    }),
-    hired: pick([0, 3, 6, 9]).map(function (c, i) {
-      return Object.assign({}, c, {
-        joining: ["21 August 2026", "1 September 2026", "8 September 2026", "15 September 2026"][i],
-        offerLetter: i !== 3,
-        offerReply: ["Accepted", "Accepted", "No Response", "Rejected"][i],
-        bgVerified: i < 2,
-        itAsset: i === 0,
-        buddy: i < 3,
-        induction: i === 0
-      });
-    }),
-    undecided: [],
-    rejected: pick([4, 8, 10, 11]).map(function (c) { return c; })
+    rejected: makeCandidates(84, 11),
+    undecided: makeCandidates(215, 40)
   };
 
   var interviewers = [
